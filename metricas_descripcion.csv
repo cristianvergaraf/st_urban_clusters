@@ -1,0 +1,140 @@
+﻿Metric,Name,Description,Range,Comments
+PR,Patch Richness Density,"m = number of patch types (classes) present in the landscape,
+excluding the landscape border if present.","PR > 1, without limit","Patch richness is perhaps the simplest measure of landscape composition, but note
+that it does not reflect the relative abundances of patch types. Note, this metric is
+redundant with both patch richness density and relative patch richness."
+PRD,Relative Patch Richness,"PR equals the number of different patch types present within the landscape
+boundary divided by total landscape area (m2), multiplied by 10,000 and 100 (to
+convert to 100 hectares). Note, total landscape area (A) includes any internal
+background present.","PRD > 0, without limit","Patch richness density standardizes richness to a per area basis that facilitates
+comparison among landscapes. Note, this metric is redundant with both patch
+richness and relative patch richness"
+SHDI,Shannon's Diversity Index,"SHDI equals minus the sum, across all patch types, of the proportional abundance
+of each patch type multiplied by that proportion. Note, Pi is based on total
+landscape area (A) excluding any internal background present.","SHDI > 0, without limit
+SHDI = 0 when the landscape contains only 1 patch (i.e., no diversity). SHDI
+increases as the number of different patch types (i.e., patch richness, PR) increases
+and/or the proportional distribution of area among patch types becomes more
+equitable.","Shannon’s diversity index is a popular measure of diversity in community ecology,
+applied here to landscapes. Shannon’s index is somewhat more sensitive to rare
+patch types than Simpson’s diversity index."
+SIDI,Simpson's Diversity Index,"SIDI equals 1 minus the sum, across all patch types, of the proportional
+abundance of each patch type squared. Note, Pi is based on total landscape area
+(A) excluding any internal background present.","0 <= SIDI < 1
+SIDI = 0 when the landscape contains only 1 patch (i.e., no diversity). SIDI
+approaches 1 as the number of different patch types (i.e., patch richness, PR)
+increases and the proportional distribution of area among patch types becomes
+more equitable.","Simpson’s diversity index is another popular diversity measure borrowed from
+community ecology. Simpson's index is less sensitive to the presence of rare types
+and has an interpretation that is much more intuitive than Shannon's index.
+Specifically, the value of Simpson's index represents the probability that any 2
+pixels selected at random would be different patch types."
+MSIDI,Modified Simpson's Diversity Index,"MSIDI equals minus the logarithm of the sum, across all patch types, of the
+proportional abundance of each patch type squared. Note, Pi is based on total
+landscape area (A) excluding any internal background present.","MSIDI >= 0, without limit
+MSIDI = 0 when the landscape contains only 1 patch (i.e., no diversity). MSIDI
+increases as the number of different patch types (i.e., patch richness, PR) increases
+and the proportional distribution of area among patch types becomes more
+equitable.","Modified Simpson's diversity index eliminates the intuitive interpretation of Simpson's
+index as a probability, but transforms the index into one that belongs to a general
+class of diversity indices to which Shannon's diversity index belongs."
+SHEI,Shannon's Evenness Index,"SHEI equals minus the sum, across all patch types, of the proportional abundance
+of each patch type multiplied by that proportion, divided by the logarithm of the
+number of patch types. In other words, the observed Shannon's Diversity Index
+divided by the maximum Shannon's Diversity Index for that number of patch
+types. Note, Pi is based on total landscape area (A) excluding any internal
+background present.","0 <= SHEI <= 1
+SHDI = 0 when the landscape contains only 1 patch (i.e., no diversity) and
+approaches 0 as the distribution of area among the different patch types becomes
+increasingly uneven (i.e., dominated by 1 type). SHDI = 1 when distribution of
+area among patch types is perfectly even (i.e., proportional abundances are the
+same).","Shannon’s evenness index is expressed such that an even distribution of area among
+patch types results in maximum evenness. As such, evenness is the complement of
+dominance."
+SIEI,Simpson's Evenness Index,"SIEI equals 1 minus the sum, across all patch types, of the proportional
+abundance of each patch type squared, divided by 1 minus 1 divided by the
+number of patch types. In other words, the observed Simpson's Diversity Index
+divided by the maximum Simpson's Diversity Index for that number of patch
+types. Note, Pi is based on total landscape area (A) excluding any internal
+background present","0 <= SIEI <= 1
+SIDI = 0 when the landscape contains only 1 patch (i.e., no diversity) and
+approaches 0 as the distribution of area among the different patch types becomes
+increasingly uneven (i.e., dominated by 1 type). SIDI = 1 when distribution of area
+among patch types is perfectly even (i.e., proportional abundances are the same).","Simpson’s evenness index is expressed such that an even distribution of area among
+patch types results in maximum evenness. As such, evenness is the complement of
+dominance."
+MSIEI,Modified Simpson's Evenness Index,"MSIEI equals minus the logarithm of the sum, across all patch types, of the
+proportional abundance of each patch type squared, divided by the logarithm of
+the number of patch types. In other words, the observed modified Simpson's
+diversity index divided by the maximum modified Simpson's diversity index for
+that number of patch types. Note, Pi is based on total landscape area (A) excluding
+any internal background present.","0 <= MSIEI <= 1
+MSIDI = 0 when the landscape contains only 1 patch (i.e., no diversity) and
+approaches 0 as the distribution of area among the different patch types becomes
+increasingly uneven (i.e., dominated by 1 type). MSIDI = 1 when distribution of
+area among patch types is perfectly even (i.e., proportional abundances are the
+same)","Modified Simpson’s evenness index is expressed such that an even distribution of area
+among patch types results in maximum evenness. As such, evenness is the
+complement of dominance."
+NP,,,,
+DIVISION,Landscape Division Index,"DIVISION equals 1 minus the sum of patch area (m2) divided by total landscape
+area (m2), quantity squared, summed across all patches of the corresponding patch
+type. Note, total landscape area (A) includes any internal background present.","0 <= DIVISION < 1
+DIVISION = 0 when the landscape consists of single patch. DIVISION
+approaches 1 when the focal patch type consists of single, small patch one cell in
+area. As the proportion of the landscape comprised of the focal patch type
+decreases and as those patches decrease in size, DIVISION approaches 1.","Division is based on the cumulative patch area distribution and is interpreted as the
+probability that two randomly chosen pixels in the landscape are not situated in
+the same patch of the corresponding patch type. Note, the similarity with
+Simpson’s diversity index, only here the sum is across the proportional area of
+each patch in the focal class, rather than the proportional area of each patch ‘type’
+in the landscape. Note, DIVISION is redundant with effective mesh size (MESH)
+below, i.e., they are perfectly, but inversely, correlated, but both metrics are
+included because of differences in units and interpretation. DIVISION is
+interpreted as a probability, whereas MESH is given as an area."
+SPLIT,Splitting Index,"PLIT equals the total landscape area (m2) squared divided by the sum of patch
+area (m2) squared, summed across all patches of the corresponding patch type.
+Note, total landscape area (A) includes any internal background present","1 <= SPLIT <= number of cells in the landscape area squared
+SPLIT = 1 when the landscape consists of single patch. SPLIT increases as the
+focal patch type is increasingly reduced in area and subdivided into smaller
+patches. The upper limit of SPLIT is constrained by the ratio of landscape area to
+cell size and is achieved when the corresponding patch type consists of a single
+one pixel patch.","Split is based on the cumulative patch area distribution and is interpreted as the
+effective mesh number, or number of patches with a constant patch size when the
+corresponding patch type is subdivided into S patches, where S is the value of the
+splitting index."
+MESH,Effective Mesh Size,"MESH equals the sum of patch area squared, summed across all patches of the
+corresponding patch type, divided by the total landscape area (m2), divided by
+10,000 (to convert to hectares). Note, total landscape area (A) includes any
+internal background present.","ratio of cell size to landscape area <= MESH <= total landscape area (A)
+The lower limit of MESH is constrained by the ratio of cell size to landscape area
+and is achieved when the corresponding patch type consists of a single one pixel
+patch. MESH is maximum when the landscape consists of a single patch","Mesh is based on the cumulative patch area distribution and is interpreted as the
+size of the patches when the corresponding patch type is subdivided into S
+patches, where S is the value of the splitting index. Note, MESH is redundant with
+DIVISION above, i.e., they are perfectly, but inversely, correlated, but both
+metrics are included because of differences in units and interpretation. DIVISION
+is interpreted as a probability, whereas MESH is given as an area. In addition, note
+the similarity between MESH and area-weight mean patch size (AREA_AM).
+Conceptually, these two metrics are closely related, but computationally they are
+quite different at the class level. Specifically, AREA_AM gives the area-weight
+mean patch size of patches of the corresponding class, where the proportional
+area of each patch is based on total class area (i.e., the total area of patches of the
+corresponding patch type). MESH, on the other hand, also gives the area
+weighted mean patch size of patches of the corresponding patch size, but the
+proportional area of each patch is based on the total landscape area, not the class
+area. In this way, MESH takes into account the patch size distribution of the
+corresponding class as well as the total landscape area comprised of that class.
+Thus, holding the patch size distribution (of the corresponding class) constant, as
+the landscape extent increases (and the percent of the landscape comprised of this
+class decreases), MESH for the corresponding class will decrease. Hence,
+AREA_AM provides an absolute measure of patch structure, whereas MESH
+provides a relative measure of patch structure."
+COM,,,,
+ED_SING,,,,
+EQUIP,,,,
+IND,,,,
+OCIO,,,,
+OFI,,,,
+RES_PLU,,,,
+RES_UNI,,,,
