@@ -100,7 +100,7 @@ variables_continuas = np.array(['TA', 'LPI', 'AREA_MN', 'AREA_AM', 'AREA_MD', 'G
 
 ### Generamos las tabs como alternativa a una app multipage
 
-tab1, tab2, tab3, tab4, tab5,tab6 = st.tabs(["Histograma", "Correlation matrix", "Scatterplot", "Resumen Datos", "Scatterplot matrix", "Boxplot"])
+tab1, tab2, tab3, tab4, tab5,tab6 = st.tabs(["Histograma", "Correlation matrix", "Scatterplot", "Resumen Datos", "Boxplot", "Scatterplot matrix"])
 
 with tab1:
    st.title("Análisis de la distribución de variables")
