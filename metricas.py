@@ -12,12 +12,22 @@ st.set_page_config(layout = "wide")
 
 #datos = pd.read_csv('ciudades_paisaje_filter.csv')
 data = {}
-data['Original'] = pd.read_csv('datos_metricas_socioeconomicos_porcentajes.csv', encoding = 'ISO-8859-1')
-data['Std'] = pd.read_csv('df_datos_std.csv', encoding = 'ISO-8859-1')
-data['MinMax'] = pd.read_csv('df_datos_MinMax.csv', encoding = 'ISO-8859-1')
-data['Rscaler'] = pd.read_csv('df_datos_Rscaler.csv', encoding = 'ISO-8859-1')
-data['PTrans'] = pd.read_csv('df_datos_PTrans.csv', encoding = 'ISO-8859-1')
-data['Normalizer'] = pd.read_csv('df_datos_Normalizer.csv', encoding = 'ISO-8859-1')
+#data['Original'] = pd.read_csv('datos_metricas_socioeconomicos_porcentajes.csv', encoding = 'ISO-8859-1')
+#data['Std'] = pd.read_csv('df_datos_std.csv', encoding = 'ISO-8859-1')
+#data['MinMax'] = pd.read_csv('df_datos_MinMax.csv', encoding = 'ISO-8859-1')
+#data['Rscaler'] = pd.read_csv('df_datos_Rscaler.csv', encoding = 'ISO-8859-1')
+#data['PTrans'] = pd.read_csv('df_datos_PTrans.csv', encoding = 'ISO-8859-1')
+#data['Normalizer'] = pd.read_csv('df_datos_Normalizer.csv', encoding = 'ISO-8859-1')
+
+
+data['Original'] = pd.read_csvr(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\datos_metricas_socioeconomicos_porcentajes.csv', encoding = 'ISO-8859-1')
+data['Std'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_std.csv', encoding = 'ISO-8859-1')
+data['MinMax'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_MinMax.csv', encoding = 'ISO-8859-1')
+data['Rscaler'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_Rscaler.csv', encoding = 'ISO-8859-1')
+data['PTrans'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_PTrans.csv', encoding = 'ISO-8859-1')
+data['Normalizer'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_Normalizer.csv', encoding = 'ISO-8859-1')
+
+
 
 
 
