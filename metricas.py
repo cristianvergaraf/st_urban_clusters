@@ -20,7 +20,7 @@ data['PTrans'] = pd.read_csv('df_datos_PTrans.csv', encoding = 'ISO-8859-1')
 data['Normalizer'] = pd.read_csv('df_datos_Normalizer.csv', encoding = 'ISO-8859-1')
 
 
-#data['Original'] = pd.read_csvr(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\datos_metricas_socioeconomicos_porcentajes.csv', encoding = 'ISO-8859-1')
+#data['Original'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\datos_metricas_socioeconomicos_porcentajes.csv', encoding = 'ISO-8859-1')
 #data['Std'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_std.csv', encoding = 'ISO-8859-1')
 #data['MinMax'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_MinMax.csv', encoding = 'ISO-8859-1')
 #data['Rscaler'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_Rscaler.csv', encoding = 'ISO-8859-1')
@@ -42,23 +42,18 @@ datos_tabla = datos.loc[:,['TA', 'LPI', 'AREA_MN', 'AREA_AM', 'AREA_MD', 'GYRATE
        'GYRATE_AM', 'GYRATE_MD', 'PRD', 'SHDI', 'SIDI', 'MSIDI', 'SHEI',
        'SIEI', 'MSIEI', 'NP', 'DIVISION', 'SPLIT', 'MESH', 'PAFRAC',
        'SHAPE_MN', 'SHAPE_MD', 'PARA_MN', 'PARA_MD', 'FRAC_MD',
-       'SQUARE_MN', 'SQUARE_MD', 'IJI', 'RNMDP_2020', 'PobT', 'PobH', 'PobM',
-       'Vehiculos', 'T_Viviendas', 'T_Viv_Prin', 'T_Viv_Sec', 'Viv_vacias',
-       'T_viv_col', 'COM', 'ED_SING', 'EQUIP', 'IND', 'OCIO', 'OFI', 'RES_PLU',
+       'SQUARE_MN', 'SQUARE_MD', 'IJI', 'LSI','TE','ED','RNMDP_2020', 'PobT', 'PobH', 'PobM',
+       'Vehiculos', 'T_Viviendas', 'T_Viv_Prin', 'T_Viv_Sec', 'Viv_vacias', 'COM', 'ED_SING', 'EQUIP', 'IND', 'OCIO', 'OFI', 'RES_PLU',
        'RES_UNI']]
 
 datos_tabla1 = datos1.loc[:,['TA', 'LPI', 'AREA_MN', 'AREA_AM', 'AREA_MD', 'GYRATE_MN',
        'GYRATE_AM', 'GYRATE_MD', 'PRD', 'SHDI', 'SIDI', 'MSIDI', 'SHEI',
        'SIEI', 'MSIEI', 'NP', 'DIVISION', 'SPLIT', 'MESH', 'PAFRAC',
        'SHAPE_MN', 'SHAPE_MD', 'PARA_MN', 'PARA_MD', 'FRAC_MD',
-       'SQUARE_MN', 'SQUARE_MD', 'IJI', 'RNMDP_2020', 'PobT', 'PobH', 'PobM',
-       'Vehiculos', 'T_Viviendas', 'T_Viv_Prin', 'T_Viv_Sec', 'Viv_vacias',
-       'T_viv_col', 'COM', 'ED_SING', 'EQUIP', 'IND', 'OCIO', 'OFI', 'RES_PLU',
+       'SQUARE_MN', 'SQUARE_MD', 'IJI','LSI', 'TE','ED','RNMDP_2020', 'PobT', 'PobH', 'PobM',
+       'Vehiculos', 'T_Viviendas', 'T_Viv_Prin', 'T_Viv_Sec', 'Viv_vacias', 'COM', 'ED_SING', 'EQUIP', 'IND', 'OCIO', 'OFI', 'RES_PLU',
        'RES_UNI']]
-
-
-                    
-                 
+        
 descripcion_metricas = pd.read_csv("metricas_descripcion.csv", index_col = 'Metric')
 
 
@@ -102,7 +97,7 @@ variables_continuas = np.array(['TA', 'LPI', 'AREA_MN', 'AREA_AM', 'AREA_MD', 'G
        'SHAPE_MN', 'SHAPE_MD', 'PARA_MN', 'PARA_MD', 'FRAC_MD',
        'SQUARE_MN', 'SQUARE_MD', 'IJI','LSI','TE','ED','RNMDP_2020', 'PobT', 'PobH', 'PobM',
        'Vehiculos', 'T_Viviendas', 'T_Viv_Prin', 'T_Viv_Sec', 'Viv_vacias',
-       'T_viv_col', 'COM', 'ED_SING', 'EQUIP', 'IND', 'OCIO', 'OFI', 'RES_PLU',
+        'COM', 'ED_SING', 'EQUIP', 'IND', 'OCIO', 'OFI', 'RES_PLU',
        'RES_UNI']) 
 
 
