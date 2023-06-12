@@ -100,7 +100,7 @@ variables_continuas = np.array(['TA', 'LPI', 'AREA_MN', 'AREA_AM', 'AREA_MD', 'G
        'GYRATE_AM', 'GYRATE_MD', 'PRD', 'SHDI', 'SIDI', 'MSIDI', 'SHEI',
        'SIEI', 'MSIEI', 'NP', 'DIVISION', 'SPLIT', 'MESH', 'PAFRAC',
        'SHAPE_MN', 'SHAPE_MD', 'PARA_MN', 'PARA_MD', 'FRAC_MD',
-       'SQUARE_MN', 'SQUARE_MD', 'IJI', 'RNMDP_2020', 'PobT', 'PobH', 'PobM',
+       'SQUARE_MN', 'SQUARE_MD', 'IJI','LSI','TE','ED','RNMDP_2020', 'PobT', 'PobH', 'PobM',
        'Vehiculos', 'T_Viviendas', 'T_Viv_Prin', 'T_Viv_Sec', 'Viv_vacias',
        'T_viv_col', 'COM', 'ED_SING', 'EQUIP', 'IND', 'OCIO', 'OFI', 'RES_PLU',
        'RES_UNI']) 
