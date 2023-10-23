@@ -1,0 +1,49 @@
+Variables,Ciudades_outliers,Outliers_Count
+TA,[],0
+LPI,"['Barcelona', 'Parla', 'San Cristóbal de La Laguna', 'Torrejón de Ardoz']",4
+AREA_MN,[],0
+AREA_AM,['Torrejón de Ardoz'],1
+AREA_MD,[],0
+GYRATE_MN,[],0
+GYRATE_AM,['Torrejón de Ardoz'],1
+GYRATE_MD,"['Alcobendas', 'Ceuta']",2
+PRD,[],0
+SHDI,[],0
+SIDI,[],0
+MSIDI,[],0
+SHEI,[],0
+SIEI,[],0
+MSIEI,[],0
+NP,[],0
+DIVISION,"['Cáceres', 'Leganés', 'Parla', 'Toledo', 'Torrejón de Ardoz', 'Zamora']",6
+SPLIT,['Torrejón de Ardoz'],1
+MESH,"['Santa Cruz de Tenerife', 'Torrejón de Ardoz']",2
+PAFRAC,['Castelló de la Plana'],1
+SHAPE_MN,"['Melilla', 'Sabadell', 'Terrassa']",3
+SHAPE_MD,"['Badalona', 'Mataró', 'Melilla', 'Sabadell', 'Terrassa']",5
+PARA_MN,['Alcobendas'],1
+PARA_MD,[],0
+FRAC_MD,"['Alcobendas', 'Badalona', 'Sabadell', 'Terrassa']",4
+SQUARE_MN,"['Alcobendas', 'Badalona', 'Coruña, A', 'Elche/Elx', 'Jerez de la Frontera', 'Madrid', 'Marbella', 'Mataró', 'Murcia', 'Parla', 'Sabadell', 'Sevilla', 'Terrassa', 'Toledo', 'Zaragoza']",15
+SQUARE_MD,"['Badalona', 'Lugo', 'Mataró', 'Melilla', 'Sabadell', 'Terrassa']",6
+IJI,[],0
+LSI,[],0
+TE,[],0
+ED,['Torrejón de Ardoz'],1
+RNMDP_2020,['Alcobendas'],1
+PobT,"['Barcelona', 'Madrid', 'Soria', 'Teruel']",4
+PobH,"['Barcelona', 'Madrid', 'Soria', 'Teruel']",4
+PobM,"['Barcelona', 'Madrid', 'Soria', 'Teruel']",4
+Vehiculos,"['Madrid', 'Soria', 'Teruel']",3
+T_Viviendas,"['Madrid', 'Teruel']",2
+T_Viv_Prin,"['Barcelona', 'Madrid', 'Soria', 'Teruel']",4
+T_Viv_Sec,['Melilla'],1
+Viv_vacias,['Madrid'],1
+COM,[],0
+ED_SING,['Torrejón de Ardoz'],1
+EQUIP,['Torrejón de Ardoz'],1
+IND,[],0
+OCIO,[],0
+OFI,[],0
+RES_PLU,[],0
+RES_UNI,[],0

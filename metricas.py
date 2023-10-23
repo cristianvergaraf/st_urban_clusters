@@ -5,20 +5,153 @@ import plotly.express as px
 import plotly.figure_factory as ff
 import plotly.graph_objects as go
 import statsmodels.formula.api as smf
+import copy
 
 st.set_page_config(layout = "wide")
 
-## Leer datos
+# Vamos a leer la libreria cluster_function
 
-#datos = pd.read_csv('ciudades_paisaje_filter.csv')
+import cluster_function as cf
+
+# Leer datos sil_score
+
+sil_score = pd.read_csv('sil_score.csv', encoding = "ISO-8859-1")
+
+sil_df_kmeans = sil_score.query('Metodo == "KMeans"')
+sil_df_ag = sil_score.query('Metodo == "Agglomerative"')
+
+## Vamos a leer los df de los distintos clusters
+
+dic_cluster = {}
+
+dic_cluster['df_Ptrans_test1_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test1_AG.csv',encoding = "ISO-8859-1")
+dic_cluster['df_Ptrans_test1_TA_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test1_TA_AG.csv',encoding = "ISO-8859-1")
+dic_cluster['df_Ptrans_test2_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test2_AG.csv',encoding = "ISO-8859-1")
+dic_cluster['df_Ptrans_test2_TA_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test2_TA_AG.csv',encoding = "ISO-8859-1")
+dic_cluster['df_Ptrans_test3_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test3_AG.csv',encoding = "ISO-8859-1")
+dic_cluster['df_Ptrans_test3_TA_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test3_TA_AG.csv',encoding = "ISO-8859-1")
+
+key_dic_cluster = np.array(['df_Ptrans_test1_AG','df_Ptrans_test1_TA_AG','df_Ptrans_test2_AG','df_Ptrans_test2_TA_AG','df_Ptrans_test3_AG','df_Ptrans_test3_TA_AG',
+                            'df_Ptrans_test1_KM','df_Ptrans_test1_TA_KM','df_Ptrans_test2_KM','df_Ptrans_test2_TA_KM','df_Ptrans_test3_KM','df_Ptrans_test3_TA_KM'])
+
+def ex_variables(df): 
+    my_list = df.columns
+    if '3' in dataset_clus:
+        exclude_element = ['AREA_MN', "ED", "RES_PLU",'T_Viviendas','RES_UNI','SIDI',"RNMDP_2020"]
+        variables_keep = [item for item in my_list if item not in exclude_element]
+    else:
+        exclude_element = ['F1','F2','F3','F4','F5']
+        variables_keep = [item for item in my_list if item not in exclude_element]
+    return variables_keep
+
+
+dic_cluster['df_Ptrans_test1_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test1_KM.csv',encoding = "ISO-8859-1")
+dic_cluster['df_Ptrans_test1_TA_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test1_TA_KM.csv',encoding = "ISO-8859-1")
+dic_cluster['df_Ptrans_test2_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test2_KM.csv',encoding = "ISO-8859-1")
+dic_cluster['df_Ptrans_test2_TA_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test2_TA_KM.csv',encoding = "ISO-8859-1")
+dic_cluster['df_Ptrans_test3_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test3_KM.csv',encoding = "ISO-8859-1")
+dic_cluster['df_Ptrans_test3_TA_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test3_TA_KM.csv',encoding = "ISO-8859-1")
+
+
+# Def function
+
+def interactive_scatter(datos,cluster):
+    
+    # Custom color palette
+    custom_palette = ["red", "green", "blue", "black", "gray"]
+
+    # Convert the column to string to make it categorical
+    datos[cluster] = datos[cluster].astype(str)
+
+    # Create the scatter plot using Plotly Express
+    scatter_fig = px.scatter(data_frame=datos, x="variable", y="value", color=cluster,
+                         color_discrete_map={value: color for value, color in zip(datos[cluster].unique(), custom_palette)},
+                         labels={'variable': ' ', 'value': 'Factor value'}, title='Customized Plot')
+
+    # Create traces for lines connecting the points
+    lines_fig = px.line(data_frame=datos, x="variable", y="value", color=cluster, 
+                    color_discrete_sequence=custom_palette, line_shape='linear')
+
+    # Update the scatter plot to show markers and lines
+    scatter_fig.update_traces(marker=dict(size=12), selector=dict(mode='markers'))
+    scatter_fig.add_traces(lines_fig.data)  # Add lines to the scatter plot
+
+    # Customize the appearance of the combined plot
+    scatter_fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='LightGray')
+    scatter_fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='LightGray')
+    scatter_fig.update_layout(plot_bgcolor='white')
+
+    # Update legend positions for both traces
+    scatter_fig.update_layout(legend=dict(x=1, y=1, traceorder='normal', orientation='v'))
+    #lines_fig.update_layout(legend=dict(x=1, y=1.15, traceorder='normal', orientation='h'))
+
+    # Show the combined plot with markers and lines
+    st.plotly_chart(scatter_fig, width = 1000, height = 500, use_container_width = True,
+                   vertical_alignment ='center')
+    
+
+def grafico(df,variables,cluster):
+    datos_melt_todos = cf.ajustar_data(df, variables)
+    datos_group = cf.group_data(datos_melt_todos,cluster)
+    return datos_group
+   
+
+
+## Leer datos en un dicctionario
 data = {}
+
 data['Original'] = pd.read_csv('datos_metricas_socioeconomicos_porcentajes.csv', encoding = 'ISO-8859-1')
 data['Std'] = pd.read_csv('df_datos_std.csv', encoding = 'ISO-8859-1')
 data['MinMax'] = pd.read_csv('df_datos_MinMax.csv', encoding = 'ISO-8859-1')
 data['Rscaler'] = pd.read_csv('df_datos_Rscaler.csv', encoding = 'ISO-8859-1')
 data['PTrans'] = pd.read_csv('df_datos_PTrans.csv', encoding = 'ISO-8859-1')
 data['Normalizer'] = pd.read_csv('df_datos_Normalizer.csv', encoding = 'ISO-8859-1')
+data['Maxabs'] = pd.read_csv('df_datos_Maxabs.csv', encoding = 'ISO-8859-1')
 
+# Leer Outliers metricas y el numero de veces que una ciudad es outliers
+
+# Vamos a crear de igual manera dictionarios con los datos
+
+outliers_metricas = {}
+outliers_ciudades = {}
+
+
+outliers_metricas['Original'] = pd.read_csv('df_datos_Original_outmerge.csv', index_col = [0],encoding = 'ISO-8859-1')
+outliers_metricas['Maxabs'] = pd.read_csv('df_datos_Maxabs_outmerge.csv', index_col = [0],encoding = 'ISO-8859-1')
+outliers_metricas['Std'] = pd.read_csv('df_datos_std_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
+outliers_metricas['MinMax'] = pd.read_csv('df_datos_MinMax_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
+outliers_metricas['Rscaler'] = pd.read_csv('df_datos_Rscaler_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
+outliers_metricas['PTrans'] = pd.read_csv('df_datos_PTrans_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
+outliers_metricas['Normalizer'] = pd.read_csv('df_datos_Normalizer_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
+
+outliers_ciudades['Original'] = pd.read_csv('df_datos_Original_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
+outliers_ciudades['Maxabs'] = pd.read_csv('df_datos_Maxabs_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
+outliers_ciudades['Std'] = pd.read_csv('df_datos_std_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
+outliers_ciudades['MinMax'] = pd.read_csv('df_datos_MinMax_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
+outliers_ciudades['Rscaler'] = pd.read_csv('df_datos_Rscaler_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
+outliers_ciudades['PTrans'] = pd.read_csv('df_datos_PTrans_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
+outliers_ciudades['Normalizer'] = pd.read_csv('df_datos_Normalizer_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
+
+###############################################################################################################################################################################################
+###############################################################################################################################################################################################
+
+#outliers_metricas['Maxabs'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_Maxabs.csv', encoding = 'ISO-8859-1')
+#outliers_metricas['Std'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_std_outmerge.csv', encoding = 'ISO-8859-1')
+#outliers_metricas['MinMax'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_MinMax_outmerge.csv', encoding = 'ISO-8859-1')
+#outliers_metricas['Rscaler'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_Rscaler_outmerge.csv', encoding = 'ISO-8859-1')
+#outliers_metricas['PTrans'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_PTrans_outmerge.csv', encoding = 'ISO-8859-1')
+#outliers_metricas['Normalizer'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_Normalizer_outmerge.csv', encoding = 'ISO-8859-1')
+
+#outliers_ciudades = {}
+#outliers_ciudades['Maxabs'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clustedf_datos_Maxabs_outciudades.csv', encoding = 'ISO-8859-1')
+#outliers_ciudades['Std'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_std_outciudades.csv', encoding = 'ISO-8859-1')
+#outliers_ciudades['MinMax'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_MinMax_outciudades.csv', encoding = 'ISO-8859-1')
+#outliers_ciudades['Rscaler'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_Rscaler_outciudades.csv', encoding = 'ISO-8859-1')
+#outliers_ciudades['PTrans'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_PTrans_outciudades.csv', encoding = 'ISO-8859-1')
+#outliers_ciudades['Normalizer'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_Normalizer_outciudades.csv', encoding = 'ISO-8859-1')
+
+
+#######################################################################################################################################################################
 
 #data['Original'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\datos_metricas_socioeconomicos_porcentajes.csv', encoding = 'ISO-8859-1')
 #data['Std'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_std.csv', encoding = 'ISO-8859-1')
@@ -28,15 +161,19 @@ data['Normalizer'] = pd.read_csv('df_datos_Normalizer.csv', encoding = 'ISO-8859
 #data['Normalizer'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_Normalizer.csv', encoding = 'ISO-8859-1')
 
 
-
-
-
 selected_file = st.selectbox("Seleccion de datos 1", ['Original','Std','MinMax','Rscaler','PTrans','Normalizer'])
 selected_file1 = st.selectbox("Seleccion de datos 2", ['Original','Std','MinMax','Rscaler','PTrans','Normalizer'])
 
 datos = data[selected_file]
-
 datos1 = data[selected_file1]
+
+df_outmetricas = outliers_metricas[selected_file].sort_values(by = 'Outliers_Count', ascending = False)
+df_outmetricas1 = outliers_metricas[selected_file1].sort_values(by = 'Outliers_Count', ascending = False)
+
+df_outciudades = outliers_ciudades[selected_file].sort_values(by = 'Outliers_Count', ascending = False)
+df_outciudades1 = outliers_ciudades[selected_file1].sort_values(by = 'Outliers_Count', ascending = False)
+
+
 
 datos_tabla = datos.loc[:,['TA', 'LPI', 'AREA_MN', 'AREA_AM', 'AREA_MD', 'GYRATE_MN',
        'GYRATE_AM', 'GYRATE_MD', 'PRD', 'SHDI', 'SIDI', 'MSIDI', 'SHEI',
@@ -105,7 +242,7 @@ variables_continuas = np.array(['TA', 'LPI', 'AREA_MN', 'AREA_AM', 'AREA_MD', 'G
 
 ### Generamos las tabs como alternativa a una app multipage
 
-tab1, tab2, tab3, tab4, tab5,tab6 = st.tabs(["Histograma", "Correlation matrix", "Scatterplot", "Resumen Datos", "Boxplot", "Scatterplot matrix"])
+tab1, tab2, tab3, tab4, tab5,tab6, tab7, tab8 = st.tabs(["Histograma", "Correlation matrix", "Scatterplot", "Resumen Datos", "Boxplot", "Scatterplot matrix", "Silhouette score","Cluster analysis"])
 
 with tab1:
    st.title("Análisis de la distribución de variables")
@@ -222,6 +359,8 @@ with tab3:
                     use_container_width = True,
                     vertical_alignment ='center')
     
+    # Esta es una parte donde te pueden explicar las metricas
+    
     #col5, col6 = st.columns(2, gap = 'small')
     #with col5:
     #    st.subheader(descripcion_metricas.loc[x_axis_val,'Name'])
@@ -238,7 +377,7 @@ with tab3:
     #    with st.expander("Range"):
     #        st.write(descripcion_metricas.loc[y_axis_val,'Range'])
     #    with st.expander('Comments'):
-    # 3        st.write(descripcion_metricas.loc[y_axis_val,'Comments'])
+    #         st.write(descripcion_metricas.loc[y_axis_val,'Comments'])
 
                 
 with tab4:
@@ -256,6 +395,8 @@ with tab4:
     #st.dataframe(describe_datos.style.format("{:.2f}"), width = 1000, height=700)
   
 
+## Boxplot and outliers
+
 with tab5:  
     col30, col40 = st.columns(2, gap = 'small')
          
@@ -270,6 +411,11 @@ with tab5:
         
         st.plotly_chart(fig_box_plot1, width = 1000, height = 1000, use_container_width = True,
                     vertical_alignment = 'center')
+        
+        st.dataframe(df_outmetricas)    
+        st.dataframe(df_outciudades)
+        
+         
     with col40:
         opciones_metricas2 = st.selectbox(label ="Boxplot2", options = variables_continuas)
         hovertemp = "<b>Ciudad: </b> %{text} <br>"
@@ -283,7 +429,13 @@ with tab5:
         
         st.plotly_chart(fig_box_plot2, width = 1000, height = 1000, use_container_width = True,
                     vertical_alignment = 'center')
-     
+        
+        #selected_file = st.selectbox("lala", ['Original','Std','MinMax','Rscaler','PTrans','Normalizer'])
+
+        st.dataframe(df_outmetricas1)    
+        st.dataframe(df_outciudades1)
+
+
     
 with tab6:
     
@@ -314,5 +466,125 @@ with tab6:
                   hovermode='closest')
 
     st.plotly_chart(fig_matrix, width = 1000, height = 500, use_container_width = True,
-                   vertical_alignment ='center') 
+                   vertical_alignment ='center')
+    
+    
+with tab7:
+    scatter_fig_kmeans = px.scatter(data_frame=sil_df_kmeans, x="n_clusters", y="Sil_Score", color='Data',
+                          title=f'KMeans Plot')
+
+    # Create traces for lines connecting the points
+    lines_fig_kmeans = px.line(data_frame=sil_df_kmeans, x="n_clusters", y="Sil_Score", color='Data', 
+            line_shape='linear')
+    # Update the scatter plot to show markers and lines
+    
+    scatter_fig_kmeans.update_traces(marker=dict(size=12), selector=dict(mode='markers'))
+    scatter_fig_kmeans.add_traces(lines_fig_kmeans.data)  # Add lines to the scatter plot
+
+    # Customize the appearance of the combined plot
+    scatter_fig_kmeans.update_xaxes(showgrid=True, gridwidth=1, gridcolor='LightGray')
+    scatter_fig_kmeans.update_yaxes(showgrid=True, gridwidth=1, gridcolor='LightGray')
+    scatter_fig_kmeans.update_layout(plot_bgcolor='white')
+
+    # Update legend positions for both traces
+    scatter_fig_kmeans.update_layout(legend=dict(x=1, y=1, traceorder='normal', orientation='v'))
+    #lines_fig.update_layout(legend=dict(x=1, y=1.15, traceorder='normal', orientation='h'))
+
+    st.plotly_chart(scatter_fig_kmeans, width = 1000, height = 500, use_container_width = True,
+                   vertical_alignment ='center')
+    
+    scatter_fig_ag = px.scatter(data_frame=sil_df_ag, x="n_clusters", y="Sil_Score", color='Data',
+                          title=f'Agglomerative Plot')
+
+    # Create traces for lines connecting the points
+    lines_fig_ag = px.line(data_frame=sil_df_ag, x="n_clusters", y="Sil_Score", color='Data', 
+            line_shape='linear')
+    # Update the scatter plot to show markers and lines
+    
+    scatter_fig_ag.update_traces(marker=dict(size=12), selector=dict(mode='markers'))
+    scatter_fig_ag.add_traces(lines_fig_ag.data)  # Add lines to the scatter plot
+
+    # Customize the appearance of the combined plot
+    scatter_fig_ag.update_xaxes(showgrid=True, gridwidth=1, gridcolor='LightGray')
+    scatter_fig_ag.update_yaxes(showgrid=True, gridwidth=1, gridcolor='LightGray')
+    scatter_fig_ag.update_layout(plot_bgcolor='white')
+
+    # Update legend positions for both traces
+    scatter_fig_kmeans.update_layout(legend=dict(x=1, y=1, traceorder='normal', orientation='v'))
+    #lines_fig.update_layout(legend=dict(x=1, y=1.15, traceorder='normal', orientation='h'))
+
+    st.plotly_chart(scatter_fig_ag, width = 1000, height = 500, use_container_width = True,
+                   vertical_alignment ='center')
+    
+with tab8:
+    
+    dataset_clus = st.selectbox(label ="seleccionar dataset de entrada", options= key_dic_cluster)
+
+    ag_clus = copy.deepcopy(dic_cluster[dataset_clus])
+    ag_clus['Ciudades'] = data['PTrans'].loc[:,['Ciudades']]
+    
+    ag_clus1 = dic_cluster[dataset_clus]
+     
+    
+    ag_variables1 = ex_variables(dic_cluster[dataset_clus])
+    sel_cluster = np.array(ag_variables1)
+    cluster = st.selectbox(label ="Elegir cluster", options = sel_cluster )
+    
+    ag_clus[cluster] = ag_clus[cluster].astype('string')
+
+    dt1 = grafico(ag_clus1,ag_variables1,cluster)
+    
+    
+    interactive_scatter(dt1,cluster)
+    
+    if "3" in dataset_clus:
+        factores_var = np.array(['AREA_MN', "ED", "RES_PLU",'T_Viviendas','RES_UNI','SIDI','ED.1','RES_PLU',"RNMDP_2020"])
+    else:
+        factores_var = np.array(['F1','F2','F3','F4','F5'])
+            
+    col1, col2 = st.columns(2, gap = 'small')
+
+    with col1:
+         x_axis_val = st.selectbox('Select X-Axis Value', options = factores_var)
+    with col2:
+         y_axis_val = st.selectbox('Select Y-Axis Value', options = factores_var)
+ 
+     #Custom color palette
+    custom_palette = ["red", "green", "blue", "white", "gray"]
+
+    # Create the scatter plot using Plotly Express
+    
+    fig = px.scatter(data_frame=ag_clus, x=x_axis_val, y=y_axis_val, color=cluster, hover_data = [cluster,'Ciudades'],
+                         color_discrete_map={value: color for value, color in zip(ag_clus[cluster].unique(), custom_palette)},
+                         labels={'variable': ' ', 'value': 'Factor value'}, title='Customized Plot')
+
+     
+    st.plotly_chart(fig, width = 1000, height = 500, use_container_width = True,
+                   vertical_alignment ='center')
+    
+    # Customize the layout (optional)
+    col1, col2, col3 = st.columns(3, gap = 'small')
+    with col1:
+         x_axis_val1 = st.selectbox('X-Axis Value', options = factores_var)
+    with col2:
+         y_axis_val1 = st.selectbox('Y-Axis Value', options = factores_var)
+    with col3:
+         z_axis_val1 = st.selectbox('Z-Axis Value', options = factores_var)
+    
+    
+    
+    
+    fig3d = px.scatter_3d(ag_clus, x = x_axis_val1, y = y_axis_val1, z = z_axis_val1, color = cluster, hover_data = [cluster,'Ciudades'],
+                          color_discrete_map={value: color for value, color in zip(ag_clus[cluster].unique(), custom_palette)},
+                         labels={'variable': ' ', 'value': 'Factor value'}, title='Customized Plot')
+    fig3d.update_layout(title='3D Scatter Plot', scene=dict(xaxis_title=f'{x_axis_val1}', yaxis_title=f'{y_axis_val1}', zaxis_title=f'{z_axis_val1}'))
+
+    # Show the plot
+    st.plotly_chart(fig3d, width = 1000, height = 500, use_container_width = True,
+                   vertical_alignment ='center')
+    
+    
+    
+   
+     
     

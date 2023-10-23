@@ -1,0 +1,49 @@
+Variables,Ciudades_outliers,Outliers_Count
+TA,"['Alcobendas', 'Ávila', 'Madrid', 'Málaga', 'Murcia', 'Sevilla', 'Toledo']",7
+LPI,"['Parla', 'Santa Coloma de Gramenet', 'Zamora']",3
+AREA_MN,"['Alcobendas', 'Alcorcón', 'Soria']",3
+AREA_AM,"['Cáceres', 'Huelva', 'Leganés', 'Parla', 'Toledo', 'Torrejón de Ardoz', 'Zamora']",7
+AREA_MD,"['Alcobendas', 'Huesca', 'Soria']",3
+GYRATE_MN,"['Huesca', 'Soria']",2
+GYRATE_AM,['Parla'],1
+GYRATE_MD,"['Huesca', 'Soria']",2
+PRD,"['Cádiz', 'Ceuta', 'Cuenca', 'Huesca', 'Melilla', 'Santa Coloma de Gramenet', 'Soria']",7
+SHDI,"['Cádiz', 'Huesca', 'Soria']",3
+SIDI,['Soria'],1
+MSIDI,['Soria'],1
+SHEI,['Soria'],1
+SIEI,['Soria'],1
+MSIEI,['Soria'],1
+NP,"['Melilla', 'Torrejón de Ardoz']",2
+DIVISION,['Soria'],1
+SPLIT,"['Girona', 'San Cristóbal de La Laguna', 'Santa Cruz de Tenerife']",3
+MESH,"['Cáceres', 'Leganés', 'Parla', 'Toledo', 'Torrejón de Ardoz', 'Zamora']",6
+PAFRAC,['Soria'],1
+SHAPE_MN,['Soria'],1
+SHAPE_MD,['Soria'],1
+PARA_MN,"['Ceuta', 'Cuenca', 'Melilla']",3
+PARA_MD,"['Ceuta', 'Melilla']",2
+FRAC_MD,['Soria'],1
+SQUARE_MN,"['Alcobendas', 'Coruña, A', 'Murcia', 'Sabadell', 'Soria', 'Toledo']",6
+SQUARE_MD,['Soria'],1
+IJI,['Santa Coloma de Gramenet'],1
+LSI,[],0
+TE,"[""Hospitalet de Llobregat, L'"", 'Parla', 'Torrejón de Ardoz', 'Valencia']",4
+ED,"['Ceuta', 'Santa Coloma de Gramenet']",2
+RNMDP_2020,['Soria'],1
+PobT,"[""Hospitalet de Llobregat, L'""]",1
+PobH,"[""Hospitalet de Llobregat, L'""]",1
+PobM,"[""Hospitalet de Llobregat, L'""]",1
+Vehiculos,"['Alcobendas', 'Torrejón de Ardoz']",2
+T_Viviendas,['Valencia'],1
+T_Viv_Prin,"[""Hospitalet de Llobregat, L'""]",1
+T_Viv_Sec,['Salamanca'],1
+Viv_vacias,[],0
+COM,"['Alcorcón', 'Cuenca', 'Huesca', 'Parla', 'Santa Coloma de Gramenet', 'Soria']",6
+ED_SING,"['Cádiz', 'Ceuta', 'Leganés', 'Melilla', 'Segovia']",5
+EQUIP,[],0
+IND,"['Huesca', 'Soria', 'Teruel']",3
+OCIO,"['Ávila', 'Cádiz', 'Ceuta', 'Guadalajara', 'Mataró', 'Segovia']",6
+OFI,"['Alcalá de Henares', 'Alcobendas', 'Cádiz', 'Ceuta', 'Ciudad Real', 'Cuenca', 'Huesca', 'León', 'Móstoles', 'Parla', 'Soria', 'Tarragona']",12
+RES_PLU,"['Cádiz', 'Santa Coloma de Gramenet', 'Soria']",3
+RES_UNI,['Ceuta'],1

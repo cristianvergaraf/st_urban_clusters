@@ -1,0 +1,49 @@
+Variables,Ciudades_outliers,Outliers_Count
+TA,"['Barcelona', 'Córdoba', 'Marbella', 'Zaragoza']",4
+LPI,"['Cáceres', 'Leganés', 'Parla', 'Santa Coloma de Gramenet', 'Toledo', 'Torrejón de Ardoz', 'Zamora']",7
+AREA_MN,"['Alcobendas', 'Toledo', 'Torrejón de Ardoz']",3
+AREA_AM,"['Cáceres', 'Cartagena', 'Dos Hermanas', 'Jerez de la Frontera', 'Leganés', 'Parla', 'Toledo', 'Torrejón de Ardoz', 'Valladolid']",9
+AREA_MD,"['Alcobendas', 'Marbella']",2
+GYRATE_MN,['Alcobendas'],1
+GYRATE_AM,"['Cáceres', 'Leganés', 'Parla', 'Toledo', 'Torrejón de Ardoz']",5
+GYRATE_MD,"['Alcobendas', 'Marbella']",2
+PRD,['Santa Coloma de Gramenet'],1
+SHDI,"['Algeciras', 'Badajoz', 'Burgos', 'Córdoba', 'Marbella', 'Ourense', 'Torrejón de Ardoz']",7
+SIDI,"['Algeciras', 'Badajoz', 'Córdoba', 'Ourense', 'Torrejón de Ardoz']",5
+MSIDI,"['Algeciras', 'Badajoz', 'Ourense', 'Torrejón de Ardoz']",4
+SHEI,"['Badajoz', 'Torrejón de Ardoz']",2
+SIEI,"['Algeciras', 'Badajoz', 'Córdoba', 'Ourense', 'Torrejón de Ardoz']",5
+MSIEI,"['Algeciras', 'Badajoz', 'Ourense', 'Torrejón de Ardoz']",4
+NP,"['Barcelona', 'Madrid', 'Málaga', 'Murcia', 'Sevilla']",5
+DIVISION,"['Cáceres', 'Huelva', 'Leganés', 'Parla', 'Santa Coloma de Gramenet', 'Toledo', 'Torrejón de Ardoz', 'Zamora']",8
+SPLIT,"['Barcelona', 'Córdoba', 'Málaga', 'San Cristóbal de La Laguna']",4
+MESH,"['Cáceres', 'Leganés', 'Madrid', 'Parla', 'Toledo', 'Torrejón de Ardoz']",6
+PAFRAC,"['Ceuta', 'Lugo', 'Ourense', 'Pontevedra', 'Vigo']",5
+SHAPE_MN,"['Badalona', 'Lugo', 'Mataró', 'Melilla', 'Sabadell', 'Terrassa']",6
+SHAPE_MD,"['Badalona', 'Lugo', 'Mataró', 'Melilla', 'Parla', 'Sabadell', 'Terrassa']",7
+PARA_MN,"['Ceuta', 'Sevilla']",2
+PARA_MD,[],0
+FRAC_MD,"['Badalona', 'Mataró', 'Sabadell', 'Terrassa']",4
+SQUARE_MN,"['Alcobendas', 'Badalona', 'Coruña, A', 'Elche/Elx', 'Jerez de la Frontera', 'Madrid', 'Marbella', 'Mataró', 'Murcia', 'Parla', 'Sabadell', 'Sevilla', 'Terrassa', 'Toledo', 'Zaragoza']",15
+SQUARE_MD,"['Badalona', ""Hospitalet de Llobregat, L'"", 'Lugo', 'Mataró', 'Melilla', 'Parla', 'Sabadell', 'Terrassa']",8
+IJI,[],0
+LSI,"['Barcelona', 'Madrid']",2
+TE,"['Barcelona', 'Madrid', 'Málaga', 'Murcia', 'Sevilla']",5
+ED,"['Santa Coloma de Gramenet', 'Torrejón de Ardoz']",2
+RNMDP_2020,"['Alcobendas', 'Barcelona', 'Madrid']",3
+PobT,"['Barcelona', 'Madrid', 'Málaga', 'Murcia', 'Palma de Mallorca', 'Sevilla', 'Valencia', 'Zaragoza']",8
+PobH,"['Barcelona', 'Madrid', 'Málaga', 'Murcia', 'Palma de Mallorca', 'Sevilla', 'Valencia', 'Zaragoza']",8
+PobM,"['Barcelona', 'Madrid', 'Málaga', 'Murcia', 'Palma de Mallorca', 'Sevilla', 'Valencia', 'Zaragoza']",8
+Vehiculos,"['Barcelona', 'Madrid', 'Málaga', 'Murcia', 'Palma de Mallorca', 'Sevilla', 'Valencia', 'Zaragoza']",8
+T_Viviendas,"['Barcelona', 'Madrid', 'Málaga', 'Sevilla', 'Valencia', 'Zaragoza']",6
+T_Viv_Prin,"['Barcelona', 'Madrid', 'Málaga', 'Palma de Mallorca', 'Sevilla', 'Valencia', 'Zaragoza']",7
+T_Viv_Sec,"['Alicante/Alacant', 'Barcelona', 'Cartagena', 'Madrid', 'Marbella', 'Sevilla', 'Valencia']",7
+Viv_vacias,"['Barcelona', 'Madrid', 'Murcia', 'Sevilla', 'Valencia', 'Zaragoza']",6
+COM,[],0
+ED_SING,"['Ceuta', 'Leganés', 'Melilla', 'Torrejón de Ardoz']",4
+EQUIP,"['Alcorcón', 'Ciudad Real']",2
+IND,"['Burgos', 'Fuenlabrada']",2
+OCIO,"['Alicante/Alacant', 'Guadalajara', 'Marbella', 'Mataró', 'Palma de Mallorca', 'Segovia']",6
+OFI,"['Alcalá de Henares', 'Alcobendas', 'Barcelona', 'Madrid', 'Parla', 'Tarragona']",6
+RES_PLU,"['Barcelona', 'Cádiz', 'Santa Coloma de Gramenet', 'Valencia']",4
+RES_UNI,['Badajoz'],1
