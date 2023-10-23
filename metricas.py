@@ -545,12 +545,12 @@ with tab8:
     col1, col2 = st.columns(2, gap = 'small')
 
     with col1:
-         x_axis_val = st.selectbox('Select X-Axis Value', options = factores_var)
+         x_axis_val = st.selectbox('Select X-Axis Value', options = factores_var, index = 0)
     with col2:
-         y_axis_val = st.selectbox('Select Y-Axis Value', options = factores_var)
+         y_axis_val = st.selectbox('Select Y-Axis Value', options = factores_var, index = 1)
  
      #Custom color palette
-    custom_palette = ["red", "green", "blue", "white", "gray"]
+    custom_palette = ["red", "green", "blue", "white", "yellow"]
 
     # Create the scatter plot using Plotly Express
     
@@ -565,13 +565,11 @@ with tab8:
     # Customize the layout (optional)
     col1, col2, col3 = st.columns(3, gap = 'small')
     with col1:
-         x_axis_val1 = st.selectbox('X-Axis Value', options = factores_var)
+         x_axis_val1 = st.selectbox('X-Axis Value', options = factores_var, index = 0)
     with col2:
-         y_axis_val1 = st.selectbox('Y-Axis Value', options = factores_var)
+         y_axis_val1 = st.selectbox('Y-Axis Value', options = factores_var, index = 1)
     with col3:
-         z_axis_val1 = st.selectbox('Z-Axis Value', options = factores_var)
-    
-    
+         z_axis_val1 = st.selectbox('Z-Axis Value', options = factores_var, index = 2)
     
     
     fig3d = px.scatter_3d(ag_clus, x = x_axis_val1, y = y_axis_val1, z = z_axis_val1, color = cluster, hover_data = [cluster,'Ciudades'],
@@ -584,7 +582,37 @@ with tab8:
                    vertical_alignment ='center')
     
     
+    st.text("Cluster 0: " + ", ".join(ag_clus[ag_clus[cluster] == "0"]['Ciudades'].tolist()))
+    st.text("Cluster 1: " + ", ".join(ag_clus[ag_clus[cluster] == "1"]['Ciudades'].tolist()))
+    st.text("Cluster 2: " + ", ".join(ag_clus[ag_clus[cluster] == "2"]['Ciudades'].tolist()))
+    st.text("Cluster 3: " + ", ".join(ag_clus[ag_clus[cluster] == "3"]['Ciudades'].tolist()))
+    st.text("Cluster 4: " + ", ".join(ag_clus[ag_clus[cluster] == "4"]['Ciudades'].tolist()))
     
-   
-     
+          
+    col1,col2,col3,col4,col5 = st.columns(5, gap = "small") 
+    with col1:
+        st.text("Cluster 0")
+        clus0 = ag_clus[ag_clus[cluster] == "1"]['Ciudades'].reset_index(drop = True)
+        st.dataframe(clus0)
+       
+    with col2:
+        st.text("Cluster 1")
+        clus1 = ag_clus[ag_clus[cluster] == "1"]['Ciudades'].reset_index(drop = True)
+        st.dataframe(clus1)
+        
+    with col3:
+        st.text("Cluster 2")
+        clus2 = ag_clus[ag_clus[cluster] == "2"]['Ciudades'].reset_index(drop = True)
+        st.dataframe(clus2)
+    
+    with col4:
+        st.text("Cluster 3")
+        clus3 = ag_clus[ag_clus[cluster] == "3"]['Ciudades'].reset_index(drop = True)
+        st.dataframe(clus3)
+    
+    with col5:
+        st.text("Cluster 4")
+        clus4 = ag_clus[ag_clus[cluster] == "4"]['Ciudades'].reset_index(drop = True)
+        st.dataframe(clus4)
+        
     
