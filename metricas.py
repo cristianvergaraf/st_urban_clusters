@@ -53,6 +53,13 @@ dic_cluster['df_Ptrans_test3_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test3
 dic_cluster['df_Ptrans_test3_TA_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test3_TA_KM.csv',encoding = "ISO-8859-1")
 
 
+key_dic_cluster = np.array(['df_Ptrans_test1_AG','df_Ptrans_test1_TA_AG','df_Ptrans_test2_AG','df_Ptrans_test2_TA_AG','df_Ptrans_test3_AG','df_Ptrans_test3_TA_AG',
+                            'df_Ptrans_test1_KM','df_Ptrans_test1_TA_KM','df_Ptrans_test2_KM','df_Ptrans_test2_TA_KM','df_Ptrans_test3_KM','df_Ptrans_test3_TA_KM'])
+
+
+
+
+
 # Def function
 
 def interactive_scatter(datos,cluster):
@@ -94,13 +101,19 @@ def grafico(df,variables,cluster):
     datos_melt_todos = cf.ajustar_data(df, variables)
     datos_group = cf.group_data(datos_melt_todos,cluster)
     return datos_group
+
+
+def display_clusters(ag_clus, cluster, num_clusters): 
+    for i in range(num_clusters):
+        cluster_data = ag_clus[ag_clus[cluster] == str(i)]
+        st.metric(label=f"Cluster {i}", value=len(cluster_data))
+        st.write(f"Cluster {i}: " + ", ".join(cluster_data['Ciudades'].tolist()))
    
 
-
-## Leer datos en un dicctionario
+## Leer datos en un diccionario
 data = {}
 
-data['Original'] = pd.read_csv('datos_metricas_socioeconomicos_porcentajes.csv', encoding = 'ISO-8859-1')
+data['Original'] = pd.read_csv('datos_metricas_socioeconomicos_porcentajes.csv', encoding = 'ISO-8859-1' )
 data['Std'] = pd.read_csv('df_datos_std.csv', encoding = 'ISO-8859-1')
 data['MinMax'] = pd.read_csv('df_datos_MinMax.csv', encoding = 'ISO-8859-1')
 data['Rscaler'] = pd.read_csv('df_datos_Rscaler.csv', encoding = 'ISO-8859-1')
@@ -108,13 +121,15 @@ data['PTrans'] = pd.read_csv('df_datos_PTrans.csv', encoding = 'ISO-8859-1')
 data['Normalizer'] = pd.read_csv('df_datos_Normalizer.csv', encoding = 'ISO-8859-1')
 data['Maxabs'] = pd.read_csv('df_datos_Maxabs.csv', encoding = 'ISO-8859-1')
 
+selected_file = st.selectbox("Seleccion de datos 1", ['Original','Std','MinMax','Rscaler','PTrans','Normalizer'])
+selected_file1 = st.selectbox("Seleccion de datos 2", ['Original','Std','MinMax','Rscaler','PTrans','Normalizer'])
+
 # Leer Outliers metricas y el numero de veces que una ciudad es outliers
 
-# Vamos a crear de igual manera dictionarios con los datos
+## Vamos a crear de igual manera dictionarios con los datos
 
 outliers_metricas = {}
 outliers_ciudades = {}
-
 
 outliers_metricas['Original'] = pd.read_csv('df_datos_Original_outmerge.csv', index_col = [0],encoding = 'ISO-8859-1')
 outliers_metricas['Maxabs'] = pd.read_csv('df_datos_Maxabs_outmerge.csv', index_col = [0],encoding = 'ISO-8859-1')
@@ -122,7 +137,7 @@ outliers_metricas['Std'] = pd.read_csv('df_datos_std_outmerge.csv', index_col = 
 outliers_metricas['MinMax'] = pd.read_csv('df_datos_MinMax_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
 outliers_metricas['Rscaler'] = pd.read_csv('df_datos_Rscaler_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
 outliers_metricas['PTrans'] = pd.read_csv('df_datos_PTrans_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
-outliers_metricas['Normalizer'] = pd.read_csv('df_datos_Normalizer_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
+outliers_metricas['Normalizer'] = pd.read_csv('df_datos_Normalizer_outmerge.csv', encoding = 'ISO-8859-1')
 
 outliers_ciudades['Original'] = pd.read_csv('df_datos_Original_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
 outliers_ciudades['Maxabs'] = pd.read_csv('df_datos_Maxabs_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
@@ -130,42 +145,7 @@ outliers_ciudades['Std'] = pd.read_csv('df_datos_std_outciudades.csv', index_col
 outliers_ciudades['MinMax'] = pd.read_csv('df_datos_MinMax_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
 outliers_ciudades['Rscaler'] = pd.read_csv('df_datos_Rscaler_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
 outliers_ciudades['PTrans'] = pd.read_csv('df_datos_PTrans_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
-outliers_ciudades['Normalizer'] = pd.read_csv('df_datos_Normalizer_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
-
-###############################################################################################################################################################################################
-###############################################################################################################################################################################################
-
-#outliers_metricas['Maxabs'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_Maxabs.csv', encoding = 'ISO-8859-1')
-#outliers_metricas['Std'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_std_outmerge.csv', encoding = 'ISO-8859-1')
-#outliers_metricas['MinMax'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_MinMax_outmerge.csv', encoding = 'ISO-8859-1')
-#outliers_metricas['Rscaler'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_Rscaler_outmerge.csv', encoding = 'ISO-8859-1')
-#outliers_metricas['PTrans'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_PTrans_outmerge.csv', encoding = 'ISO-8859-1')
-#outliers_metricas['Normalizer'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_Normalizer_outmerge.csv', encoding = 'ISO-8859-1')
-
-#outliers_ciudades = {}
-#outliers_ciudades['Maxabs'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clustedf_datos_Maxabs_outciudades.csv', encoding = 'ISO-8859-1')
-#outliers_ciudades['Std'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_std_outciudades.csv', encoding = 'ISO-8859-1')
-#outliers_ciudades['MinMax'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_MinMax_outciudades.csv', encoding = 'ISO-8859-1')
-#outliers_ciudades['Rscaler'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_Rscaler_outciudades.csv', encoding = 'ISO-8859-1')
-#outliers_ciudades['PTrans'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_PTrans_outciudades.csv', encoding = 'ISO-8859-1')
-#outliers_ciudades['Normalizer'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_Normalizer_outciudades.csv', encoding = 'ISO-8859-1')
-
-
-#######################################################################################################################################################################
-
-#data['Original'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\datos_metricas_socioeconomicos_porcentajes.csv', encoding = 'ISO-8859-1')
-#data['Std'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_std.csv', encoding = 'ISO-8859-1')
-#data['MinMax'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_MinMax.csv', encoding = 'ISO-8859-1')
-#data['Rscaler'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_Rscaler.csv', encoding = 'ISO-8859-1')
-#data['PTrans'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_PTrans.csv', encoding = 'ISO-8859-1')
-#data['Normalizer'] = pd.read_csv(r'C:\Users\crist\Documents\GitHub\manifolds\st_urban_cluster\st_urban_clusters\df_datos_Normalizer.csv', encoding = 'ISO-8859-1')
-
-
-selected_file = st.selectbox("Seleccion de datos 1", ['Original','Std','MinMax','Rscaler','PTrans','Normalizer'])
-selected_file1 = st.selectbox("Seleccion de datos 2", ['Original','Std','MinMax','Rscaler','PTrans','Normalizer'])
-
-datos = data[selected_file]
-datos1 = data[selected_file1]
+outliers_ciudades['Normalizer'] = pd.read_csv('df_datos_Normalizer_outciudades.csv', encoding = 'ISO-8859-1')
 
 df_outmetricas = outliers_metricas[selected_file].sort_values(by = 'Outliers_Count', ascending = False)
 df_outmetricas1 = outliers_metricas[selected_file1].sort_values(by = 'Outliers_Count', ascending = False)
@@ -173,9 +153,61 @@ df_outmetricas1 = outliers_metricas[selected_file1].sort_values(by = 'Outliers_C
 df_outciudades = outliers_ciudades[selected_file].sort_values(by = 'Outliers_Count', ascending = False)
 df_outciudades1 = outliers_ciudades[selected_file1].sort_values(by = 'Outliers_Count', ascending = False)
 
+##########
+
+# https://docs.streamlit.io/library/advanced-features/session-state#initialization
+# https://discuss.streamlit.io/t/proper-use-of-on-change-with-st-experimental-data-editor/41704/5
+
+def update_state():         
+   st.session_state.edited_df = edit
+   
+def update_correlation_matrix():
+        st.session_state.button_correlation = True
+    
+ # two dataframe in session state. An original and and edited version 
+ 
+#1. Paso uno creamos los dataframes datos y datos1 a partir de la seleccion de los usuarios
+
+datos = data[selected_file]
+datos1 = data[selected_file1]
+
+# Creamos dos elementos dentro de session states df y edited/df
+
+if 'df' not in st.session_state:
+    st.session_state.df = datos
+    
+if 'edited_df' not in st.session_state:
+    st.session_state.edited_df = datos  # Aqui coloco datos para inicializar con algo podria ser datos
+
+      
+if "button_correlation" not in st.session_state:
+        st.session_state.button_correlation = False
+        
+if "histogram_plot" not in st.session_state:
+        st.session_state.histogram_plot = False
+
+
+edit = st.data_editor(datos, num_rows="dynamic")
+
+st.button('Save changes', on_click = update_state) # Este botton me actualiza el state. De forma jerarquico el botton de datos correlacion deberia esta anidado en este.
+
+#st.write(st.session_state.edited_df)
+
+#####
+
+
+
 
 
 datos_tabla = datos.loc[:,['TA', 'LPI', 'AREA_MN', 'AREA_AM', 'AREA_MD', 'GYRATE_MN',
+       'GYRATE_AM', 'GYRATE_MD', 'PRD', 'SHDI', 'SIDI', 'MSIDI', 'SHEI',
+       'SIEI', 'MSIEI', 'NP', 'DIVISION', 'SPLIT', 'MESH', 'PAFRAC',
+       'SHAPE_MN', 'SHAPE_MD', 'PARA_MN', 'PARA_MD', 'FRAC_MD',
+       'SQUARE_MN', 'SQUARE_MD', 'IJI', 'LSI','TE','ED','RNMDP_2020', 'PobT', 'PobH', 'PobM',
+       'Vehiculos', 'T_Viviendas', 'T_Viv_Prin', 'T_Viv_Sec', 'Viv_vacias', 'COM', 'ED_SING', 'EQUIP', 'IND', 'OCIO', 'OFI', 'RES_PLU',
+       'RES_UNI']]
+
+datos_tabla_editados = st.session_state.edited_df.loc[:,['TA', 'LPI', 'AREA_MN', 'AREA_AM', 'AREA_MD', 'GYRATE_MN',
        'GYRATE_AM', 'GYRATE_MD', 'PRD', 'SHDI', 'SIDI', 'MSIDI', 'SHEI',
        'SIEI', 'MSIEI', 'NP', 'DIVISION', 'SPLIT', 'MESH', 'PAFRAC',
        'SHAPE_MN', 'SHAPE_MD', 'PARA_MN', 'PARA_MD', 'FRAC_MD',
@@ -254,64 +286,110 @@ with tab1:
        st.header("Selecciona numero de bins")
        bins_num = int(st.slider("Selecciona numero de bins", format = r"%g", min_value = 1, max_value = 50, value = 25, step = 1))
        
-   if st.button('Presiona el button para el grafico'):    
+   
+   
+   histo_button = st.button("Presiona el botón para ver los histogramas")
+   
+   if histo_button or st.session_state.histogram_plot:    
        hist_data = datos.loc[:,opciones]
+       hist_data_editado = st.session_state.edited_df.loc[:,opciones] ## Hemos agregado aqui el data editado
        hist_data1 = datos1.loc[:,opciones]
        group_labels = [opciones]
    # Create distplot with custom bin_size
        fig = px.histogram(hist_data,x = group_labels, nbins = bins_num)
+       fig_editado = px.histogram(hist_data_editado,x = group_labels, nbins = bins_num)
        fig1 = px.histogram(hist_data1,x = group_labels, nbins = bins_num)
+       
   
    # Plot !!
        st.header(f"Ditribution {selected_file} de {opciones}")
        st.plotly_chart(fig, width = 1000, height = 500, use_container_width = True,
                    vertical_alignment ='center')
+       
+       st.header(f"Ditribution {selected_file} de {opciones} Editado")
+       st.plotly_chart(fig_editado, width = 1000, height = 500, use_container_width = True,
+                   vertical_alignment ='center')
+       
        st.header(f"Ditribution {selected_file1} de {opciones}")
        st.plotly_chart(fig1, width = 1000, height = 500, use_container_width = True,
                    vertical_alignment ='center')   
 
-   
+
+# CORRELACION
 with tab2:
     
+    
+    
     cont_multi_selected = st.multiselect('Correlation Matrix', variables_continuas,
-                                     default=variables_continuas)
-    if st.button('Selecciona las variables'):
-        st.write("""           
-              """)
-       
+                                     default=['ED_SING','AREA_MN','ED','RES_PLU','TA','T_Viviendas','RES_UNI','SIDI', 'RNMDP_2020'])
+    
+    
+     #, ,,,,'RES_PLU',
+    
+    # sin el botton funciona bien. Ver bien como integrar el session.state del botton con el edit data.
+    # Initialize session state
+    
+    def style_negative_blue(val):
+            
+            if val == 1:
+                color = 'yellow'
+            elif 0.3 <= val <= 0.99:
+                color = 'blue'
+                
+            elif -0.99 <= val <= -0.3:
+                color = 'red'
+            else:
+                color = 'white'  # Set default color for other values
+            return f'color: {color}'
+        
+    load = st.button('Selecciona las variables')
+    # initialization
+    
+        
+    if load or  st.session_state.button_correlation: 
+        
         df_corr = datos[cont_multi_selected].corr()
+        df_corr_editado = st.session_state.edited_df[cont_multi_selected].corr()
         df_corr1 = datos1[cont_multi_selected].corr()
+    
+        #st.write((st.session_state.edited_df).astype('object')) Este codigo es para probar la reactividad.
+        #st.dataframe(datos1) Este igual es para ver la reactividad.
+        
+        
+        st.dataframe(df_corr.style.applymap(style_negative_blue))    
+        st.dataframe(df_corr_editado.style.applymap(style_negative_blue))
+        st.dataframe(df_corr1.style.applymap(style_negative_blue))
+                     
+    
      
-        fig_corr = go.Figure([go.Heatmap(
-            z = df_corr.values, 
-            x=df_corr.index.values, 
-            y=df_corr.columns.values, 
-            colorscale= 'gray',
-                           text=[[format_value(value) for value in row] for row in df_corr.values],
-                            texttemplate="%{text}",
-                            textfont={"size":10})])
+    #fig_corr = go.Figure([go.Heatmap(
+     #       z = df_corr.values, 
+      #      x=df_corr.index.values, 
+       #     y=df_corr.columns.values, 
+        #    colorscale= 'gray',
+         #                  text=[[format_value(value) for value in row] for row in df_corr.values],
+          #                  texttemplate="%{text}",
+           #                 textfont={"size":10})])
      
-        fig_corr.update_layout(height=300, width=1000, margin={'l': 20, 'r': 20, 't': 0, 'b': 0})
+    #fig_corr.update_layout(height=300, width=1000, margin={'l': 20, 'r': 20, 't': 0, 'b': 0})
      
-        st.plotly_chart(fig_corr, width = 1000, height = 1000, use_container_width = True,
-                     vertical_alignment = 'center')
+    #st.plotly_chart(fig_corr, width = 1000, height = 1000, use_container_width = True,
+                   #  vertical_alignment = 'center')
      
-        fig_corr1 = go.Figure([go.Heatmap(
-            z = df_corr1.values, 
-            x=df_corr1.index.values, 
-            y=df_corr1.columns.values, 
-            colorscale= 'gray',
-                           text=[[format_value(value) for value in row] for row in df_corr.values],
-                            texttemplate="%{text}",
-                            textfont={"size":10})])
+    #fig_corr1 = go.Figure([go.Heatmap(
+     #       z = df_corr1.values, 
+      #      x=df_corr1.index.values, 
+       #     y=df_corr1.columns.values, 
+        #    colorscale= 'gray',
+         #                  text=[[format_value(value) for value in row] for row in df_corr1.values],
+          #                  texttemplate="%{text}",
+           #                 textfont={"size":10})])
      
-        fig_corr1.update_layout(height=300, width=1000, margin={'l': 20, 'r': 20, 't': 0, 'b': 0})
-     
-     
+    #fig_corr1.update_layout(height=300, width=1000, margin={'l': 20, 'r': 20, 't': 0, 'b': 0})
      
      
-        st.plotly_chart(fig_corr1, width = 1000, height = 1000, use_container_width = True,
-                     vertical_alignment = 'center')
+    #st.plotly_chart(fig_corr1, width = 1000, height = 1000, use_container_width = True,
+     #                vertical_alignment = 'center')
      
 # Scatterplot
 
@@ -328,9 +406,14 @@ with tab3:
     intercepto = modelo.params['Intercept']
     ecuacion = f'{y_axis_val} = {pendiente:.2f}x + {intercepto:.2f}'
     r2 = modelo.rsquared
-    #correlacion = datos.corr().iloc[0,1]
-    st.write(f'La ecuacion de la recta ajustada para {x_axis_val} y {y_axis_val} es {ecuacion}')
-    st.write(f'El coeficiente de determinacion (r2) entre {x_axis_val} y {y_axis_val} es {r2:.2f}')
+    correlation = np.sqrt(r2)
+    
+    st.subheader("SELECCION DE DATOS 1")
+    
+    col1,col2,col3 = st.columns(3)
+    col1.write(f'La ecuacion de la recta ajustada para {x_axis_val} y {y_axis_val} es {ecuacion}')
+    col2.metric(f'Coeficiente de Correlación {x_axis_val} y {y_axis_val} ',f'{correlation:.2f}')
+    col3.metric(f'Coeficiente de determinación (r2) entre {x_axis_val} y {y_axis_val}', f'{r2:.2f}')
     
     plotscat = px.scatter(datos, x=x_axis_val, y = y_axis_val, trendline="ols",trendline_color_override='darkblue',
                           opacity=0.65,trendline_scope="overall", hover_data =['Ciudades'])
@@ -341,15 +424,54 @@ with tab3:
                     vertical_alignment ='center')
     
     
+    ##########################################################################
+    
     formula = f"{y_axis_val} ~ {x_axis_val}"
     modelo1 = smf.ols(formula = formula, data = datos1).fit()
     pendiente1 = modelo1.params[f"{x_axis_val}"]
     intercepto1 = modelo1.params['Intercept']
     ecuacion1 = f'{y_axis_val} = {pendiente1:.2f}x + {intercepto1:.2f}'
     r2_1 = modelo1.rsquared
+    correlation_1 = np.sqrt(r2_1)
+    
+    st.subheader("SELECCION DE DATOS 1 EDITADO")
+    
+    col1,col2,col3 = st.columns(3)
+    col1.write(f'La ecuacion de la recta ajustada para {x_axis_val} y {y_axis_val} es {ecuacion}')
+    col2.metric(f'El coeficiente de Correlación {x_axis_val} y {y_axis_val} es',f'{correlation:.2f}')
+    col3.metric(f'El coeficiente de determinación (r2) entre {x_axis_val} y {y_axis_val} es', f'{r2:.2f}')
+    
+    plotscat = px.scatter(st.session_state.edited_df, x=x_axis_val, y = y_axis_val, trendline="ols",trendline_color_override='darkblue',
+                          opacity=0.65,trendline_scope="overall", hover_data =['Ciudades'])
+    plotscat.update_layout(legend=dict(yanchor="top", y=1.10, xanchor="center", x=0.5))
+    
+    st.plotly_chart(plotscat, width = 1000, heigth = 800,
+                    use_container_width = True,
+                    vertical_alignment ='center')
+
+    
+    #################################################
+    
+   
+    
+    formula = f"{y_axis_val} ~ {x_axis_val}"
+    modelo1 = smf.ols(formula = formula, data = datos1).fit()
+    pendiente1 = modelo1.params[f"{x_axis_val}"]
+    intercepto1 = modelo1.params['Intercept']
+    ecuacion1 = f'{y_axis_val} = {pendiente1:.2f}x + {intercepto1:.2f}'
+    r2_1 = modelo1.rsquared
+    correlation_1 = np.sqrt(r2_1)
+    
+    st.subheader("SELECCION DE DATOS 2")
+             
+    col1,col2,col3 = st.columns(3)
+    col1.write(f'La ecuacion de la recta ajustada para {x_axis_val} y {y_axis_val} es {ecuacion1}')
+    col2.metric(f'El coeficiente de Correlación {x_axis_val} y {y_axis_val} es',f'{correlation_1:.2f}')
+    col3.metric(f'El coeficiente de determinación (r2) entre {x_axis_val} y {y_axis_val} es', f'{r2_1:.2f}')
+    
     #correlacion = datos.corr().iloc[0,1]
-    st.write(f'La ecuacion de la recta ajustada para {x_axis_val} y {y_axis_val} es {ecuacion1}')
-    st.write(f'El coeficiente de determinacion (r2) entre {x_axis_val} y {y_axis_val} es {r2_1:.2f}')
+    #st.write(f'El coeficiente de determinacion (r2) entre {x_axis_val} y {y_axis_val} es {r2_1:.2f}')
+    #st.write(f'El coeficiente de correlacion entre {x_axis_val} y {y_axis_val} es {correlation_1:.2f}')
     
     plotscat1 = px.scatter(datos1, x=x_axis_val, y = y_axis_val, trendline="ols",trendline_color_override='darkblue',
                           opacity=0.65,trendline_scope="overall", hover_data =['Ciudades'])
@@ -386,22 +508,28 @@ with tab4:
         st.header(f"Resumen Datos {selected_file}")
         describe_datos = datos_tabla.describe().T
         st.dataframe(describe_datos)
-         
+               
     with col20:
         st.header(f"Resumen Datos {selected_file1}")
         describe_datos1 = datos_tabla1.describe().T
         st.dataframe(describe_datos1)
-         
+     
+    
+    st.header(f"Resumen Datos Editados {selected_file}")
+    describe_datos_editados = datos_tabla_editados.describe().T
+    st.dataframe(describe_datos_editados)
+    
     #st.dataframe(describe_datos.style.format("{:.2f}"), width = 1000, height=700)
   
 
 ## Boxplot and outliers
 
 with tab5:  
-    col30, col40 = st.columns(2, gap = 'small')
+    col30, col40,col50 = st.columns(3, gap = 'small')
          
+    
     with col30:
-        opciones_metricas1 = st.selectbox(label ="Boxplot", options = variables_continuas)
+        opciones_metricas1 = st.selectbox(label ="Boxplot Datos 1", options = variables_continuas)
         hovertemp1 = "<b>Ciudad: </b> %{text} <br>"
         hovertemp1 += "<b>Value: </b> %{y}"
         fig_box_plot1 = go.Figure()
@@ -411,32 +539,53 @@ with tab5:
         
         st.plotly_chart(fig_box_plot1, width = 1000, height = 1000, use_container_width = True,
                     vertical_alignment = 'center')
-        
-        st.dataframe(df_outmetricas)    
-        st.dataframe(df_outciudades)
-        
-         
+          
     with col40:
-        opciones_metricas2 = st.selectbox(label ="Boxplot2", options = variables_continuas)
+        opciones_metricas2 = st.selectbox(label ="Boxplot Datos 1 Editados", options = variables_continuas)
+        hovertemp1 = "<b>Ciudad: </b> %{text} <br>"
+        hovertemp1 += "<b>Value: </b> %{y}"
+        fig_box_plot2 = go.Figure()
+        fig_box_plot2.add_trace(go.Box(y=st.session_state.edited_df[opciones_metricas1].values, name=st.session_state.edited_df[opciones_metricas1].name,
+                                hovertemplate = hovertemp1,
+                                text = datos1['Ciudades']))
+        
+        st.plotly_chart(fig_box_plot2, width = 1000, height = 1000, use_container_width = True,
+                    vertical_alignment = 'center')
+        
+                
+         
+    with col50:
+        opciones_metricas3 = st.selectbox(label ="Boxplot Datos 2", options = variables_continuas)
         hovertemp = "<b>Ciudad: </b> %{text} <br>"
         hovertemp += "<b>Value: </b> %{y}"
-        fig_box_plot2 = go.Figure()
-        fig_box_plot2.add_trace(go.Box(y=datos1[opciones_metricas2].values, name=datos[opciones_metricas2].name,
+        fig_box_plot3 = go.Figure()
+        fig_box_plot3.add_trace(go.Box(y=datos1[opciones_metricas2].values, name=datos1[opciones_metricas2].name,
                                    hovertemplate = hovertemp,
                                    text = datos1['Ciudades']
                                    #
                                    ))
         
-        st.plotly_chart(fig_box_plot2, width = 1000, height = 1000, use_container_width = True,
+        st.plotly_chart(fig_box_plot3, width = 1000, height = 1000, use_container_width = True,
                     vertical_alignment = 'center')
         
-        #selected_file = st.selectbox("lala", ['Original','Std','MinMax','Rscaler','PTrans','Normalizer'])
-
-        st.dataframe(df_outmetricas1)    
-        st.dataframe(df_outciudades1)
 
 
+           
+    coldf1, coldf2= st.columns(2, gap = 'small')
     
+    with coldf1:
+        
+        st.dataframe(df_outmetricas)
+        st.dataframe(df_outciudades)    
+       
+    
+    with coldf2:
+        st.dataframe(df_outmetricas1)
+        st.dataframe(df_outciudades1)  
+        
+    
+    
+           
 with tab6:
     
     variables_seleccionadas = st.multiselect('Scatterplot matrix', variables_continuas,
@@ -530,6 +679,8 @@ with tab8:
     sel_cluster = np.array(ag_variables1)
     cluster = st.selectbox(label ="Elegir cluster", options = sel_cluster )
     
+    n = int(cluster[2])
+    st.write(n)
     ag_clus[cluster] = ag_clus[cluster].astype('string')
 
     dt1 = grafico(ag_clus1,ag_variables1,cluster)
@@ -582,37 +733,7 @@ with tab8:
                    vertical_alignment ='center')
     
     
-    st.text("Cluster 0: " + ", ".join(ag_clus[ag_clus[cluster] == "0"]['Ciudades'].tolist()))
-    st.text("Cluster 1: " + ", ".join(ag_clus[ag_clus[cluster] == "1"]['Ciudades'].tolist()))
-    st.text("Cluster 2: " + ", ".join(ag_clus[ag_clus[cluster] == "2"]['Ciudades'].tolist()))
-    st.text("Cluster 3: " + ", ".join(ag_clus[ag_clus[cluster] == "3"]['Ciudades'].tolist()))
-    st.text("Cluster 4: " + ", ".join(ag_clus[ag_clus[cluster] == "4"]['Ciudades'].tolist()))
+    display_clusters(ag_clus, cluster, n) 
     
-          
-    col1,col2,col3,col4,col5 = st.columns(5, gap = "small") 
-    with col1:
-        st.text("Cluster 0")
-        clus0 = ag_clus[ag_clus[cluster] == "1"]['Ciudades'].reset_index(drop = True)
-        st.dataframe(clus0)
-       
-    with col2:
-        st.text("Cluster 1")
-        clus1 = ag_clus[ag_clus[cluster] == "1"]['Ciudades'].reset_index(drop = True)
-        st.dataframe(clus1)
-        
-    with col3:
-        st.text("Cluster 2")
-        clus2 = ag_clus[ag_clus[cluster] == "2"]['Ciudades'].reset_index(drop = True)
-        st.dataframe(clus2)
     
-    with col4:
-        st.text("Cluster 3")
-        clus3 = ag_clus[ag_clus[cluster] == "3"]['Ciudades'].reset_index(drop = True)
-        st.dataframe(clus3)
-    
-    with col5:
-        st.text("Cluster 4")
-        clus4 = ag_clus[ag_clus[cluster] == "4"]['Ciudades'].reset_index(drop = True)
-        st.dataframe(clus4)
-        
-    
+ 
