@@ -11,7 +11,7 @@ st.set_page_config(layout = "wide")
 
 # Vamos a leer la libreria cluster_function
 
-import cluster_function as cf
+#import cluster_function as cf
 
 # Leer datos sil_score
 
@@ -97,9 +97,21 @@ def interactive_scatter(datos,cluster):
                    vertical_alignment ='center')
     
 
+def ajustar_data(df, variables = None):
+    if 'Ciudades' in df.columns:
+        df = df.drop("Ciudades", axis = 1)
+    df_melt = df.melt(id_vars = variables)
+    return df_melt
+
+def group_data(df,cluster):
+    im3_groups_mean = df.groupby(['variable',cluster,
+    ])['value'].mean().reset_index() 
+    
+    return im3_groups_mean
+
 def grafico(df,variables,cluster):
-    datos_melt_todos = cf.ajustar_data(df, variables)
-    datos_group = cf.group_data(datos_melt_todos,cluster)
+    datos_melt_todos = ajustar_data(df, variables)
+    datos_group = group_data(datos_melt_todos,cluster)
     return datos_group
 
 
@@ -184,7 +196,7 @@ def update_state():
    st.session_state.edited_df = edit
    
 def update_correlation_matrix():
-        st.session_state.button_correlation = True
+   st.session_state.button_correlation = True
     
  # two dataframe in session state. An original and and edited version 
  
