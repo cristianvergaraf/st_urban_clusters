@@ -16,23 +16,29 @@ import cluster_function as cf
 # Leer datos sil_score
 
 sil_score = pd.read_csv('sil_score.csv', encoding = "ISO-8859-1")
-
 sil_df_kmeans = sil_score.query('Metodo == "KMeans"')
 sil_df_ag = sil_score.query('Metodo == "Agglomerative"')
 
 ## Vamos a leer los df de los distintos clusters
 
-dic_cluster = {}
+#@st.cache_data
+def load_cluster():
+    dic_cluster = {}
+    dic_cluster['df_Ptrans_test1_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test1_AG.csv',encoding = "ISO-8859-1")
+    dic_cluster['df_Ptrans_test1_TA_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test1_TA_AG.csv',encoding = "ISO-8859-1")
+    dic_cluster['df_Ptrans_test2_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test2_AG.csv',encoding = "ISO-8859-1")
+    dic_cluster['df_Ptrans_test2_TA_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test2_TA_AG.csv',encoding = "ISO-8859-1")
+    dic_cluster['df_Ptrans_test3_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test3_AG.csv',encoding = "ISO-8859-1")
+    dic_cluster['df_Ptrans_test3_TA_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test3_TA_AG.csv',encoding = "ISO-8859-1")
+    dic_cluster['df_Ptrans_test1_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test1_KM.csv',encoding = "ISO-8859-1")
+    dic_cluster['df_Ptrans_test1_TA_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test1_TA_KM.csv',encoding = "ISO-8859-1")
+    dic_cluster['df_Ptrans_test2_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test2_KM.csv',encoding = "ISO-8859-1")
+    dic_cluster['df_Ptrans_test2_TA_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test2_TA_KM.csv',encoding = "ISO-8859-1")
+    dic_cluster['df_Ptrans_test3_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test3_KM.csv',encoding = "ISO-8859-1")
+    dic_cluster['df_Ptrans_test3_TA_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test3_TA_KM.csv',encoding = "ISO-8859-1")
+    return dic_cluster
 
-dic_cluster['df_Ptrans_test1_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test1_AG.csv',encoding = "ISO-8859-1")
-dic_cluster['df_Ptrans_test1_TA_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test1_TA_AG.csv',encoding = "ISO-8859-1")
-dic_cluster['df_Ptrans_test2_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test2_AG.csv',encoding = "ISO-8859-1")
-dic_cluster['df_Ptrans_test2_TA_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test2_TA_AG.csv',encoding = "ISO-8859-1")
-dic_cluster['df_Ptrans_test3_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test3_AG.csv',encoding = "ISO-8859-1")
-dic_cluster['df_Ptrans_test3_TA_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test3_TA_AG.csv',encoding = "ISO-8859-1")
-
-key_dic_cluster = np.array(['df_Ptrans_test1_AG','df_Ptrans_test1_TA_AG','df_Ptrans_test2_AG','df_Ptrans_test2_TA_AG','df_Ptrans_test3_AG','df_Ptrans_test3_TA_AG',
-                            'df_Ptrans_test1_KM','df_Ptrans_test1_TA_KM','df_Ptrans_test2_KM','df_Ptrans_test2_TA_KM','df_Ptrans_test3_KM','df_Ptrans_test3_TA_KM'])
+dic_cluster = load_cluster()
 
 def ex_variables(df): 
     my_list = df.columns
@@ -45,19 +51,13 @@ def ex_variables(df):
     return variables_keep
 
 
-dic_cluster['df_Ptrans_test1_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test1_KM.csv',encoding = "ISO-8859-1")
-dic_cluster['df_Ptrans_test1_TA_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test1_TA_KM.csv',encoding = "ISO-8859-1")
-dic_cluster['df_Ptrans_test2_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test2_KM.csv',encoding = "ISO-8859-1")
-dic_cluster['df_Ptrans_test2_TA_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test2_TA_KM.csv',encoding = "ISO-8859-1")
-dic_cluster['df_Ptrans_test3_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test3_KM.csv',encoding = "ISO-8859-1")
-dic_cluster['df_Ptrans_test3_TA_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test3_TA_KM.csv',encoding = "ISO-8859-1")
+
+
+
 
 
 key_dic_cluster = np.array(['df_Ptrans_test1_AG','df_Ptrans_test1_TA_AG','df_Ptrans_test2_AG','df_Ptrans_test2_TA_AG','df_Ptrans_test3_AG','df_Ptrans_test3_TA_AG',
                             'df_Ptrans_test1_KM','df_Ptrans_test1_TA_KM','df_Ptrans_test2_KM','df_Ptrans_test2_TA_KM','df_Ptrans_test3_KM','df_Ptrans_test3_TA_KM'])
-
-
-
 
 
 # Def function
@@ -73,7 +73,7 @@ def interactive_scatter(datos,cluster):
     # Create the scatter plot using Plotly Express
     scatter_fig = px.scatter(data_frame=datos, x="variable", y="value", color=cluster,
                          color_discrete_map={value: color for value, color in zip(datos[cluster].unique(), custom_palette)},
-                         labels={'variable': ' ', 'value': 'Factor value'}, title='Customized Plot')
+                         labels={'variable': ' ', 'value': 'Factor value'}, title='Fig 1. Media de cada variable para cada cluster')
 
     # Create traces for lines connecting the points
     lines_fig = px.line(data_frame=datos, x="variable", y="value", color=cluster, 
@@ -111,15 +111,27 @@ def display_clusters(ag_clus, cluster, num_clusters):
    
 
 ## Leer datos en un diccionario
-data = {}
 
-data['Original'] = pd.read_csv('datos_metricas_socioeconomicos_porcentajes.csv', encoding = 'ISO-8859-1' )
-data['Std'] = pd.read_csv('df_datos_std.csv', encoding = 'ISO-8859-1')
-data['MinMax'] = pd.read_csv('df_datos_MinMax.csv', encoding = 'ISO-8859-1')
-data['Rscaler'] = pd.read_csv('df_datos_Rscaler.csv', encoding = 'ISO-8859-1')
-data['PTrans'] = pd.read_csv('df_datos_PTrans.csv', encoding = 'ISO-8859-1')
-data['Normalizer'] = pd.read_csv('df_datos_Normalizer.csv', encoding = 'ISO-8859-1')
-data['Maxabs'] = pd.read_csv('df_datos_Maxabs.csv', encoding = 'ISO-8859-1')
+
+
+#### Example usage
+file_names = ['datos_metricas_socioeconomicos_porcentajes', 'df_datos_std', 'df_datos_MinMax', 'df_datos_Rscaler', 'df_datos_PTrans', 'df_datos_Normalizer', 'df_datos_Maxabs']
+keys = ['Original', 'Std', 'MinMax', 'Rscaler', 'PTrans', 'Normalizer', 'Maxabs']
+
+
+@st.cache_data
+def load_data():
+    data = {}
+    data['Original'] = pd.read_csv('datos_metricas_socioeconomicos_porcentajes.csv', encoding = 'ISO-8859-1' )
+    data['Std'] = pd.read_csv('df_datos_std.csv', encoding = 'ISO-8859-1')
+    data['MinMax'] = pd.read_csv('df_datos_MinMax.csv', encoding = 'ISO-8859-1')
+    data['Rscaler'] = pd.read_csv('df_datos_Rscaler.csv', encoding = 'ISO-8859-1')
+    data['PTrans'] = pd.read_csv('df_datos_PTrans.csv', encoding = 'ISO-8859-1')
+    data['Normalizer'] = pd.read_csv('df_datos_Normalizer.csv', encoding = 'ISO-8859-1')
+    data['Maxabs'] = pd.read_csv('df_datos_Maxabs.csv', encoding = 'ISO-8859-1')
+    return data
+
+data = load_data()
 
 selected_file = st.selectbox("Seleccion de datos 1", ['Original','Std','MinMax','Rscaler','PTrans','Normalizer'])
 selected_file1 = st.selectbox("Seleccion de datos 2", ['Original','Std','MinMax','Rscaler','PTrans','Normalizer'])
@@ -128,24 +140,34 @@ selected_file1 = st.selectbox("Seleccion de datos 2", ['Original','Std','MinMax'
 
 ## Vamos a crear de igual manera dictionarios con los datos
 
-outliers_metricas = {}
-outliers_ciudades = {}
+@st.cache_data
+def load_outliers_metricas():
+    outliers_metricas = {}
+    outliers_metricas['Original'] = pd.read_csv('df_datos_Original_outmerge.csv', index_col = [0],encoding = 'ISO-8859-1')
+    outliers_metricas['Maxabs'] = pd.read_csv('df_datos_Maxabs_outmerge.csv', index_col = [0],encoding = 'ISO-8859-1')
+    outliers_metricas['Std'] = pd.read_csv('df_datos_std_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
+    outliers_metricas['MinMax'] = pd.read_csv('df_datos_MinMax_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
+    outliers_metricas['Rscaler'] = pd.read_csv('df_datos_Rscaler_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
+    outliers_metricas['PTrans'] = pd.read_csv('df_datos_PTrans_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
+    outliers_metricas['Normalizer'] = pd.read_csv('df_datos_Normalizer_outmerge.csv', encoding = 'ISO-8859-1')
+    return outliers_metricas
 
-outliers_metricas['Original'] = pd.read_csv('df_datos_Original_outmerge.csv', index_col = [0],encoding = 'ISO-8859-1')
-outliers_metricas['Maxabs'] = pd.read_csv('df_datos_Maxabs_outmerge.csv', index_col = [0],encoding = 'ISO-8859-1')
-outliers_metricas['Std'] = pd.read_csv('df_datos_std_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
-outliers_metricas['MinMax'] = pd.read_csv('df_datos_MinMax_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
-outliers_metricas['Rscaler'] = pd.read_csv('df_datos_Rscaler_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
-outliers_metricas['PTrans'] = pd.read_csv('df_datos_PTrans_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
-outliers_metricas['Normalizer'] = pd.read_csv('df_datos_Normalizer_outmerge.csv', encoding = 'ISO-8859-1')
+@st.cache_data
+def load_outliers_ciudades():
+    outliers_ciudades = {}
+    outliers_ciudades['Original'] = pd.read_csv('df_datos_Original_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
+    outliers_ciudades['Maxabs'] = pd.read_csv('df_datos_Maxabs_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
+    outliers_ciudades['Std'] = pd.read_csv('df_datos_std_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
+    outliers_ciudades['MinMax'] = pd.read_csv('df_datos_MinMax_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
+    outliers_ciudades['Rscaler'] = pd.read_csv('df_datos_Rscaler_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
+    outliers_ciudades['PTrans'] = pd.read_csv('df_datos_PTrans_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
+    outliers_ciudades['Normalizer'] = pd.read_csv('df_datos_Normalizer_outciudades.csv', encoding = 'ISO-8859-1')
+    return outliers_ciudades
 
-outliers_ciudades['Original'] = pd.read_csv('df_datos_Original_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
-outliers_ciudades['Maxabs'] = pd.read_csv('df_datos_Maxabs_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
-outliers_ciudades['Std'] = pd.read_csv('df_datos_std_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
-outliers_ciudades['MinMax'] = pd.read_csv('df_datos_MinMax_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
-outliers_ciudades['Rscaler'] = pd.read_csv('df_datos_Rscaler_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
-outliers_ciudades['PTrans'] = pd.read_csv('df_datos_PTrans_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
-outliers_ciudades['Normalizer'] = pd.read_csv('df_datos_Normalizer_outciudades.csv', encoding = 'ISO-8859-1')
+
+outliers_metricas = load_outliers_metricas()
+outliers_ciudades = load_outliers_ciudades()
+
 
 df_outmetricas = outliers_metricas[selected_file].sort_values(by = 'Outliers_Count', ascending = False)
 df_outmetricas1 = outliers_metricas[selected_file1].sort_values(by = 'Outliers_Count', ascending = False)
@@ -168,6 +190,8 @@ def update_correlation_matrix():
  
 #1. Paso uno creamos los dataframes datos y datos1 a partir de la seleccion de los usuarios
 
+#st.write("Elige uno de los dataset a los que se le aplicaron distintos tipos de escalamiento, check out this [https://scikit-learn.org/stable/auto_examples/preprocessing/plot_all_scaling.html]")
+st.markdown("Elige uno de los dataset a los que se le aplicaron distintos tipos de escalamiento: [scikit scaling](https://scikit-learn.org/stable/auto_examples/preprocessing/plot_all_scaling.html)")
 datos = data[selected_file]
 datos1 = data[selected_file1]
 
@@ -274,7 +298,7 @@ variables_continuas = np.array(['TA', 'LPI', 'AREA_MN', 'AREA_AM', 'AREA_MD', 'G
 
 ### Generamos las tabs como alternativa a una app multipage
 
-tab1, tab2, tab3, tab4, tab5,tab6, tab7, tab8 = st.tabs(["Histograma", "Correlation matrix", "Scatterplot", "Resumen Datos", "Boxplot", "Scatterplot matrix", "Silhouette score","Cluster analysis"])
+tab1, tab2, tab3, tab4, tab5,tab6, tab7, tab8, tab9 = st.tabs(["Histograma", "Correlation matrix", "Scatterplot", "Resumen Datos", "Boxplot", "Scatterplot matrix", "Silhouette score","Cluster analysis", "Datos Clusters"])
 
 with tab1:
    st.title("Análisis de la distribución de variables")
@@ -323,11 +347,6 @@ with tab2:
     cont_multi_selected = st.multiselect('Correlation Matrix', variables_continuas,
                                      default=['ED_SING','AREA_MN','ED','RES_PLU','TA','T_Viviendas','RES_UNI','SIDI', 'RNMDP_2020'])
     
-    
-     #, ,,,,'RES_PLU',
-    
-    # sin el botton funciona bien. Ver bien como integrar el session.state del botton con el edit data.
-    # Initialize session state
     
     def style_negative_blue(val):
             
@@ -619,6 +638,35 @@ with tab6:
     
     
 with tab7:
+    
+    st.info('Los conjuntos de datos que terminan en TA, no tienen datos de Torrejón de Ardoz', icon="ℹ️")
+
+    with st.expander("Variables dataset test1"):
+        st.write("""
+                F1 = LSI * 0.810 + TE * 0.924 + T_Viviendas * 0.979 + PobT * 0.979 + Vehiculos * 0.965 \n
+                F2 = ED * 0.930 + AREA_MN * -0.878 \n
+                F3 = SHEI * 0.991 + SIDI * 0.951 \n
+                F4 = LPI * -0.821 + AREA_AM * -0.862 + MESH * -0.881 + SPLIT * 0.804 + DIVISION * 0.793 \n
+                F5 = RES_UNI * -0.784
+            """)
+        
+    with st.expander("variables dataset test2"):
+        st.write("""
+                F1 = AREA_MN * 0.815 + ED * 0.913 + RES_PLU  * 0.654 \n
+                F2 = LPI * -0.848 + SPLIT * 0.834 + MESH * -0.764 \n
+                F3 = LSI * 0.755 + T_Viviendas * 0.957 \n
+                F4 = RES_UNI * 0.817 \n
+                F5 = SIDI * 0.751 \n
+                
+                     """)
+            
+    with st.expander("variables dataset test3"):
+        st.write("""
+                AREA_MN, ED, RES_PLUS, T_Viviendas, RES_UNI, SIDI, RNMDP_2020
+                     """)
+ 
+  
+    st.text('Fig 1. Índice de Silhouette por número de cluster para cada dataset utilizando el método Kmeans')
     scatter_fig_kmeans = px.scatter(data_frame=sil_df_kmeans, x="n_clusters", y="Sil_Score", color='Data',
                           title=f'KMeans Plot')
 
@@ -642,6 +690,8 @@ with tab7:
     st.plotly_chart(scatter_fig_kmeans, width = 1000, height = 500, use_container_width = True,
                    vertical_alignment ='center')
     
+    st.text("""Fig 2. Índice de Silhouette por número de cluster para cada dataset utilizando el método 
+                 agrupamiento jerárquico """)
     scatter_fig_ag = px.scatter(data_frame=sil_df_ag, x="n_clusters", y="Sil_Score", color='Data',
                           title=f'Agglomerative Plot')
 
@@ -667,25 +717,73 @@ with tab7:
     
 with tab8:
     
-    dataset_clus = st.selectbox(label ="seleccionar dataset de entrada", options= key_dic_cluster)
-
-    ag_clus = copy.deepcopy(dic_cluster[dataset_clus])
-    ag_clus['Ciudades'] = data['PTrans'].loc[:,['Ciudades']]
+    st.info('Aquí encontrarás las variables de los dintintos conjuntos de datos', icon="ℹ️")
+    with st.expander("Variables dataset test1"):
+        st.write("""
+                F1 = LSI * 0.810 + TE * 0.924 + T_Viviendas * 0.979 + PobT * 0.979 + Vehiculos * 0.965 \n
+                F2 = ED * 0.930 + AREA_MN * -0.878 \n
+                F3 = SHEI * 0.991 + SIDI * 0.951 \n
+                F4 = LPI * -0.821 + AREA_AM * -0.862 + MESH * -0.881 + SPLIT * 0.804 + DIVISION * 0.793 \n
+                F5 = RES_UNI * -0.784 
+            """)
+        
+    with st.expander("variables dataset test2"):
+        st.write("""
+                F1 = AREA_MN * 0.815 + ED * 0.913 + RES_PLU  * 0.654 \n
+                F2 = LPI * -0.848 + SPLIT * 0.834 + MESH * -0.764 \n
+                F3 = LSI * 0.755 + T_Viviendas * 0.957 \n
+                F4 = RES_UNI * 0.817 \n
+                F5 = SIDI * 0.751 \n
+                
+                     """)
+            
+    with st.expander("variables dataset test3"):
+        st.write("""
+                AREA_MN, ED, RES_PLUS, T_Viviendas, RES_UNI, SIDI, RNMDP_2020
+                     """)
+            
+ 
+    # Revisar que estamos haciendo aqui
     
+    # Damos la opcion de seleccionar por el nombre uno de los dataset
+    dataset_clus = st.selectbox(label ="seleccionar dataset de entrada", options= key_dic_cluster)
+    
+    # Creamos el ag_clus con la seleccion del dataset y luego le incorporamos la 
+    # columna ciudades. Este dataset lo utilizaremos para los hover
+    ag_clus = copy.deepcopy(dic_cluster[dataset_clus]) 
+    ag_clus['Ciudades'] = data['PTrans'].loc[:,['Ciudades']] #borrar revisar
+    
+    # creamos un ag_clus1 sin columna ciudades 
     ag_clus1 = dic_cluster[dataset_clus]
      
-    
+    # Aplicamos la funcion ex_variables para identificar cuales son las 
+    # variables de cada dataset
     ag_variables1 = ex_variables(dic_cluster[dataset_clus])
+    
+    # Creamos una lista de variables y luego las pasamos como argumento para la selecion
+    # dentro de un selectbox
+    
     sel_cluster = np.array(ag_variables1)
     cluster = st.selectbox(label ="Elegir cluster", options = sel_cluster )
     
+    # Identificamos el numero de cluster a partir de la posicion 2 del string del nombre
+    # de la columan seleccionada (Esto falla para el cluster 10)
+    
     n = int(cluster[2])
-    st.write(n)
+    
+    # Transformamos la columna que queremos graficar a string para que la leyenda 
+    # salga categorica
+    
     ag_clus[cluster] = ag_clus[cluster].astype('string')
 
+    ## aplicamos la funcion grafico que realiza la preparacion de los datos para realizar el grafico
+    # con interactive_scatter.
+    
+    # utilizamos ag_clus1 necesitamos el dataset sin columnas con una variable string como ciudad.
+    # 
     dt1 = grafico(ag_clus1,ag_variables1,cluster)
     
-    
+    # dentro de la funcion identificamos si el nombre del dataset tiene el numero 1,2,3 para identificar las variables 
     interactive_scatter(dt1,cluster)
     
     if "3" in dataset_clus:
@@ -707,7 +805,7 @@ with tab8:
     
     fig = px.scatter(data_frame=ag_clus, x=x_axis_val, y=y_axis_val, color=cluster, hover_data = [cluster,'Ciudades'],
                          color_discrete_map={value: color for value, color in zip(ag_clus[cluster].unique(), custom_palette)},
-                         labels={'variable': ' ', 'value': 'Factor value'}, title='Customized Plot')
+                         labels={'variable': ' ', 'value': 'Factor value'}, title='Fig 2. Distribución de las observaciones agrupadas por color para cada cluster')
 
      
     st.plotly_chart(fig, width = 1000, height = 500, use_container_width = True,
@@ -725,7 +823,7 @@ with tab8:
     
     fig3d = px.scatter_3d(ag_clus, x = x_axis_val1, y = y_axis_val1, z = z_axis_val1, color = cluster, hover_data = [cluster,'Ciudades'],
                           color_discrete_map={value: color for value, color in zip(ag_clus[cluster].unique(), custom_palette)},
-                         labels={'variable': ' ', 'value': 'Factor value'}, title='Customized Plot')
+                         labels={'variable': ' ', 'value': 'Factor value'}, title='Municipios por cluster')
     fig3d.update_layout(title='3D Scatter Plot', scene=dict(xaxis_title=f'{x_axis_val1}', yaxis_title=f'{y_axis_val1}', zaxis_title=f'{z_axis_val1}'))
 
     # Show the plot
@@ -734,6 +832,39 @@ with tab8:
     
     
     display_clusters(ag_clus, cluster, n) 
+    
+    with tab9:
+        
+        st.info('Aquí encontrarás las variables de los dintintos conjuntos de datos', icon="ℹ️")
+        with st.expander("Variables dataset test1"):
+            st.write("""
+                F1 = LSI * 0.810 + TE * 0.924 + T_Viviendas * 0.979 + PobT * 0.979 + Vehiculos * 0.965 \n
+                F2 = ED * 0.930 + AREA_MN * -0.878 \n
+                F3 = SHEI * 0.991 + SIDI * 0.951 \n
+                F4 = LPI * -0.821 + AREA_AM * -0.862 + MESH * -0.881 + SPLIT * 0.804 + DIVISION * 0.793 \n
+                F5 = RES_UNI * -0.784
+            """)
+        
+        with st.expander("variables dataset test2"):
+            st.write("""
+                F1 = AREA_MN * 0.815 + ED * 0.913 + RES_PLU  * 0.654 \n
+                F2 = LPI * -0.848 + SPLIT * 0.834 + MESH * -0.764 \n
+                F3 = LSI * 0.755 + T_Viviendas * 0.957 \n
+                F4 = RES_UNI * 0.817 \n
+                F5 = SIDI * 0.751 
+                
+                     """)
+            
+        with st.expander("variables dataset test3"):
+            st.write("""
+                AREA_MN, ED, RES_PLUS, T_Viviendas, RES_UNI, SIDI, RNMDP_2020
+                     """)
+            
+        file = st.selectbox(label ="Selecciona un archivo", options= key_dic_cluster)
+        clus_dataframe = dic_cluster[file]
+        st.dataframe(clus_dataframe)
+        st.write(clus_dataframe.describe())
+        
     
     
  
