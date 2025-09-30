@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 import statsmodels.formula.api as smf
 import copy
 from src.viz_helpers import interactive_scatter
-
+from src.load_data_helper import load_cluster, load_data, load_outliers_ciudades, load_outliers_metricas
 st.set_page_config(layout = "wide")
 
 # Vamos a leer la libreria cluster_function
@@ -22,89 +22,23 @@ sil_df_ag = sil_score.query('Metodo == "Agglomerative"')
 
 ## Vamos a leer los df de los distintos clusters
 
-#@st.cache_data
-def load_cluster():
-    dic_cluster = {}
-    dic_cluster['df_Ptrans_test1_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test1_AG.csv',encoding = "ISO-8859-1")
-    dic_cluster['df_Ptrans_test1_TA_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test1_TA_AG.csv',encoding = "ISO-8859-1")
-    dic_cluster['df_Ptrans_test2_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test2_AG.csv',encoding = "ISO-8859-1")
-    dic_cluster['df_Ptrans_test2_TA_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test2_TA_AG.csv',encoding = "ISO-8859-1")
-    dic_cluster['df_Ptrans_test3_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test3_AG.csv',encoding = "ISO-8859-1")
-    dic_cluster['df_Ptrans_test3_TA_AG'] = pd.read_csv('./df_cluster_AG/df_Ptrans_test3_TA_AG.csv',encoding = "ISO-8859-1")
-    dic_cluster['df_Ptrans_test1_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test1_KM.csv',encoding = "ISO-8859-1")
-    dic_cluster['df_Ptrans_test1_TA_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test1_TA_KM.csv',encoding = "ISO-8859-1")
-    dic_cluster['df_Ptrans_test2_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test2_KM.csv',encoding = "ISO-8859-1")
-    dic_cluster['df_Ptrans_test2_TA_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test2_TA_KM.csv',encoding = "ISO-8859-1")
-    dic_cluster['df_Ptrans_test3_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test3_KM.csv',encoding = "ISO-8859-1")
-    dic_cluster['df_Ptrans_test3_TA_KM'] = pd.read_csv('./df_cluster_KM/df_Ptrans_test3_TA_KM.csv',encoding = "ISO-8859-1")
-    return dic_cluster
+
 
 dic_cluster = load_cluster()
 
-def ex_variables(df): 
-    my_list = df.columns
-    if '3' in dataset_clus:
-        exclude_element = ['AREA_MN', "ED", "RES_PLU",'T_Viviendas','RES_UNI','SIDI',"RNMDP_2020"]
-        variables_keep = [item for item in my_list if item not in exclude_element]
-    else:
-        exclude_element = ['F1','F2','F3','F4','F5']
-        variables_keep = [item for item in my_list if item not in exclude_element]
-    return variables_keep
-
-
-key_dic_cluster = np.array(['df_Ptrans_test1_AG','df_Ptrans_test1_TA_AG','df_Ptrans_test2_AG','df_Ptrans_test2_TA_AG','df_Ptrans_test3_AG','df_Ptrans_test3_TA_AG',
-                            'df_Ptrans_test1_KM','df_Ptrans_test1_TA_KM','df_Ptrans_test2_KM','df_Ptrans_test2_TA_KM','df_Ptrans_test3_KM','df_Ptrans_test3_TA_KM'])
 
 
 # Def function
 
-    
-
-def ajustar_data(df, variables = None):
-    if 'Ciudades' in df.columns:
-        df = df.drop("Ciudades", axis = 1)
-    df_melt = df.melt(id_vars = variables)
-    return df_melt
-
-def group_data(df,cluster):
-    im3_groups_mean = df.groupby(['variable',cluster,
-    ])['value'].mean().reset_index() 
-    
-    return im3_groups_mean
-
-def grafico(df,variables,cluster):
-    datos_melt_todos = ajustar_data(df, variables)
-    datos_group = group_data(datos_melt_todos,cluster)
-    return datos_group
 
 
-def display_clusters(ag_clus, cluster, num_clusters): 
-    for i in range(num_clusters):
-        cluster_data = ag_clus[ag_clus[cluster] == str(i)]
-        st.metric(label=f"Cluster {i}", value=len(cluster_data))
-        st.write(f"Cluster {i}: " + ", ".join(cluster_data['Ciudades'].tolist()))
-   
 
 ## Leer datos en un diccionario
 
 
 
-#### Example usage
-file_names = ['datos_metricas_socioeconomicos_porcentajes', 'df_datos_std', 'df_datos_MinMax', 'df_datos_Rscaler', 'df_datos_PTrans', 'df_datos_Normalizer', 'df_datos_Maxabs']
-keys = ['Original', 'Std', 'MinMax', 'Rscaler', 'PTrans', 'Normalizer', 'Maxabs']
 
 
-@st.cache_data
-def load_data():
-    data = {}
-    data['Original'] = pd.read_csv('datos_metricas_socioeconomicos_porcentajes.csv', encoding = 'ISO-8859-1' )
-    data['Std'] = pd.read_csv('df_datos_std.csv', encoding = 'ISO-8859-1')
-    data['MinMax'] = pd.read_csv('df_datos_MinMax.csv', encoding = 'ISO-8859-1')
-    data['Rscaler'] = pd.read_csv('df_datos_Rscaler.csv', encoding = 'ISO-8859-1')
-    data['PTrans'] = pd.read_csv('df_datos_PTrans.csv', encoding = 'ISO-8859-1')
-    data['Normalizer'] = pd.read_csv('df_datos_Normalizer.csv', encoding = 'ISO-8859-1')
-    data['Maxabs'] = pd.read_csv('df_datos_Maxabs.csv', encoding = 'ISO-8859-1')
-    return data
 
 data = load_data()
 
@@ -115,29 +49,7 @@ selected_file1 = st.selectbox("Seleccion de datos 2", ['Original','Std','MinMax'
 
 ## Vamos a crear de igual manera dictionarios con los datos
 
-@st.cache_data
-def load_outliers_metricas():
-    outliers_metricas = {}
-    outliers_metricas['Original'] = pd.read_csv('df_datos_Original_outmerge.csv', index_col = [0],encoding = 'ISO-8859-1')
-    outliers_metricas['Maxabs'] = pd.read_csv('df_datos_Maxabs_outmerge.csv', index_col = [0],encoding = 'ISO-8859-1')
-    outliers_metricas['Std'] = pd.read_csv('df_datos_std_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
-    outliers_metricas['MinMax'] = pd.read_csv('df_datos_MinMax_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
-    outliers_metricas['Rscaler'] = pd.read_csv('df_datos_Rscaler_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
-    outliers_metricas['PTrans'] = pd.read_csv('df_datos_PTrans_outmerge.csv', index_col = [0], encoding = 'ISO-8859-1')
-    outliers_metricas['Normalizer'] = pd.read_csv('df_datos_Normalizer_outmerge.csv', encoding = 'ISO-8859-1')
-    return outliers_metricas
 
-@st.cache_data
-def load_outliers_ciudades():
-    outliers_ciudades = {}
-    outliers_ciudades['Original'] = pd.read_csv('df_datos_Original_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
-    outliers_ciudades['Maxabs'] = pd.read_csv('df_datos_Maxabs_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
-    outliers_ciudades['Std'] = pd.read_csv('df_datos_std_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
-    outliers_ciudades['MinMax'] = pd.read_csv('df_datos_MinMax_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
-    outliers_ciudades['Rscaler'] = pd.read_csv('df_datos_Rscaler_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
-    outliers_ciudades['PTrans'] = pd.read_csv('df_datos_PTrans_outciudades.csv', index_col = [0], encoding = 'ISO-8859-1')
-    outliers_ciudades['Normalizer'] = pd.read_csv('df_datos_Normalizer_outciudades.csv', encoding = 'ISO-8859-1')
-    return outliers_ciudades
 
 
 outliers_metricas = load_outliers_metricas()
